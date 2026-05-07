@@ -12,3 +12,9 @@ reports.
 - **Tests** - pytest with in-memory SQLite for fast test runs
 
 
+## Run
+
+```zsh
+uv run uvicorn main:app --app-dir backend --reload
+```
+
