@@ -18,6 +18,9 @@ class Settings(BaseSettings):
     DB_PASSWORD: str
     DB_NAME: str
 
+    # Secret key to create and verify JWT tokens
+    SECRET_KEY: str
+
     @property
     def database_url(self) -> str:
         """Build full database connection URL"""
