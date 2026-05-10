@@ -21,6 +21,9 @@ class Settings(BaseSettings):
     # Secret key to create and verify JWT tokens
     SECRET_KEY: str
 
+    # secret word added to all passwords
+    PEPPER: str
+
     @property
     def database_url(self) -> str:
         """Build full database connection URL"""

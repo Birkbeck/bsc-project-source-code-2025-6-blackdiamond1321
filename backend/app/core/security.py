@@ -12,15 +12,17 @@ from app.interfaces import IAuthToken, IPasswordHasher
 class Argon2PasswordHasher(IPasswordHasher):
     """Argon2id implementation of IPasswordHasher"""
 
-    def __init__(self):
+    # add secret words to all passwords before hashing. For extra security
+    def __init__(self, pepper: str):
         self._argon2 = PasswordHasher()
+        self.pepper = pepper
 
     def hash(self, plain: str) -> str:
-        return self._argon2.hash(plain)
+        return self._argon2.hash(plain + self.pepper)
 
     def verify(self, plain: str, hashed: str) -> bool:
         try:
-            return self._argon2.verify(hashed, plain)
+            return self._argon2.verify(hashed, plain + self.pepper)
         except (VerifyMismatchError, InvalidHashError):
             return False
 
