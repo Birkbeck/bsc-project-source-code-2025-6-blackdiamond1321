@@ -3,11 +3,14 @@
 from app.interfaces import IAuthToken, IPasswordHasher
 from app.models import User
 from app.repositories import UserRepository
-from app.schemas import TokenResponse, UserCreate, UserResponse
+from app.schemas import TokenResponse, UserCreate, UserResponse, UserLogin
 
 
 class EmailExistsError(Exception):
     """Raised when registering with an email that was used before"""
+
+class InvalidCredentialsError(Exception):
+    """Raised when login details are incorrect"""
 
 
 class UserService:
@@ -36,11 +39,22 @@ class UserService:
             first_name=data.first_name,
             last_name=data.last_name,
             security_question=data.security_question,
-
+            
             # make the answer lowercase  and remove any whitespace
             security_answer=data.security_answer.strip().lower(),
         )
         self._users.add(user)
+
+        return TokenResponse(
+            access_token=self._tokens.create_token(user.id),
+            user=UserResponse.model_validate(user),
+        )
+
+    def login(self, data: UserLogin) -> TokenResponse:
+        """Check credentials and return a token"""
+        user = self._users.find_by_email(data.email)
+        if not user or not self._hasher.verify(data.password, user.password_hash):
+            raise InvalidCredentialsError("Invalid email or password")
 
         return TokenResponse(
             access_token=self._tokens.create_token(user.id),
