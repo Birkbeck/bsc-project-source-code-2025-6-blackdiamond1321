@@ -4,19 +4,7 @@ from app.interfaces import IAuthToken, IPasswordHasher
 from app.models import User
 from app.repositories import UserRepository
 from app.schemas import TokenResponse, UserCreate, UserResponse, UserLogin
-
-
-class EmailExistsError(Exception):
-    """Raised when registering with an email that was used before"""
-
-class InvalidCredentialsError(Exception):
-    """Raised when login details are incorrect"""
-
-class UserNotFoundError(Exception):
-    """Raised when no account exists with the given email"""
-
-class IncorrectAnswerError(Exception):
-    """Raised when the security answer doesn't match"""
+from app.utils.exceptions import IncorrectAnswerError, UserNotFoundError, InvalidCredentialsError, EmailExistsError
 
 class UserService:
     """Business logic for user account operations"""
@@ -59,7 +47,7 @@ class UserService:
         """Check credentials and return a token"""
         user = self._users.find_by_email(data.email)
         if not user or not self._hasher.verify(data.password, user.password_hash):
-            raise InvalidCredentialsError("Invalid email or password")
+            raise InvalidCredentialsError()
 
         return TokenResponse(
             access_token=self._tokens.create_token(user.id),
@@ -70,18 +58,18 @@ class UserService:
         """Give the security question for the given email"""
         user = self._users.find_by_email(email)
         if not user:
-            raise UserNotFoundError("No account found with this email.")
+            raise UserNotFoundError()
         return user.security_question
 
     def reset_password(self, email: str, answer: str, new_password: str) -> None:
         """Check if the security answer is the same and reset the password"""
         user = self._users.find_by_email(email)
         if not user:
-            raise UserNotFoundError("No account found with this email.")
+            raise UserNotFoundError()
 
         # # make the typed answer lowercase and remove any whitespaces
         if user.security_answer != answer.strip().lower():
-            raise IncorrectAnswerError("Incorrect security answer.")
+            raise IncorrectAnswerError()
 
         user.password_hash = self._hasher.hash(new_password)
         self._users.update(user)

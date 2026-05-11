@@ -1,0 +1,51 @@
+"""Errors that app can run into"""
+
+
+class DomainError(Exception):
+    """The base class for all errors"""
+
+    status_code: int = 400
+    detail: str = "Domain error"
+
+    def __init__(self, detail: str | None = None):
+        if detail:
+            self.detail = detail
+        super().__init__(self.detail)
+
+
+# 400. The user sent wrong data
+
+class ValidationError(DomainError):
+    status_code = 400
+
+
+class EmailExistsError(ValidationError):
+    """Raised when registering with an email that was used before"""
+    detail = "Email already in use"
+
+
+class IncorrectAnswerError(ValidationError):
+    """Raised when the security answer doesn't match"""
+    detail = "Incorrect security answer"
+
+
+# 401. The user used wrong credentials
+
+class AuthError(DomainError):
+    status_code = 401
+
+
+class InvalidCredentialsError(AuthError):
+    """Raised when login details are incorrect"""
+    detail = "Invalid email or password"
+
+
+# 404. If account not registered
+
+class NotFoundError(DomainError):
+    status_code = 404
+
+
+class UserNotFoundError(NotFoundError):
+    """Raised when no account exists with the given email"""
+    detail = "No account found with this email"

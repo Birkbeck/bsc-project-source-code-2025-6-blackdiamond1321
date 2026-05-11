@@ -12,7 +12,9 @@ from fastapi.security import OAuth2PasswordRequestForm
 
 from app.core.dependencies import get_user_service, get_current_user
 from app.schemas import TokenResponse, UserCreate, UserLogin, UserResponse, EmailRequest, ForgotPassword
-from app.services.user import EmailExistsError, UserService, InvalidCredentialsError, UserNotFoundError, IncorrectAnswerError
+from app.services.user import UserService
+from app.utils.exceptions import IncorrectAnswerError, UserNotFoundError, InvalidCredentialsError, EmailExistsError
+
 from app.models import User
 
 router = APIRouter(prefix="/api/users", tags=["users"])
