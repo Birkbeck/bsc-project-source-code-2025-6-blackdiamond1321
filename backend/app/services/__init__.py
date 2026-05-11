@@ -1,5 +1,11 @@
 """Store services for easy access"""
 
-from app.services.user import EmailExistsError, UserService, InvalidCredentialsError
+from app.services.user import EmailExistsError, UserService, InvalidCredentialsError, UserNotFoundError, IncorrectAnswerError
 
-__all__ = ["UserService", "EmailExistsError", "InvalidCredentialsError"]
+__all__ = [
+    "UserService",
+    "EmailExistsError",
+    "InvalidCredentialsError",
+    "UserNotFoundError",
+    "IncorrectAnswerError"
+]
