@@ -11,8 +11,8 @@ from fastapi import APIRouter, Depends, HTTPException, status
 from fastapi.security import OAuth2PasswordRequestForm
 
 from app.core.dependencies import get_user_service, get_current_user
-from app.schemas import TokenResponse, UserCreate, UserLogin, UserResponse
-from app.services import EmailExistsError, UserService, InvalidCredentialsError
+from app.schemas import TokenResponse, UserCreate, UserLogin, UserResponse, EmailRequest, ForgotPassword
+from app.services.user import EmailExistsError, UserService, InvalidCredentialsError, UserNotFoundError, IncorrectAnswerError
 from app.models import User
 
 router = APIRouter(prefix="/api/users", tags=["users"])
@@ -53,3 +53,28 @@ def login(
 def me(current_user: User = Depends(get_current_user)) -> User:
     """Return the logged-in user's info"""
     return current_user
+
+@router.post("/forgot-question")
+def forgot_question(
+    data: EmailRequest,
+    service: UserService = Depends(get_user_service),
+) -> dict:
+    """Return the security question for the email"""
+    try:
+        question = service.get_security_question(data.email)
+        return {"question": question}
+    except UserNotFoundError as e:
+        raise HTTPException(status_code=404, detail=str(e))
+
+
+@router.post("/reset-password")
+def reset_password(
+    data: ForgotPassword,
+    service: UserService = Depends(get_user_service),
+) -> dict:
+    """Reset password by answering the question"""
+    try:
+        service.reset_password(data.email, data.answer, data.new_password)
+        return {"message": "Password reset successfully"}
+    except (UserNotFoundError, IncorrectAnswerError):
+        raise HTTPException(status_code=400, detail="Invalid email or answer")

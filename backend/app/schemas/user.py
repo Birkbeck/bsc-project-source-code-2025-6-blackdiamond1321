@@ -50,3 +50,16 @@ class UserLogin(BaseModel):
 
     email: EmailStr
     password: str
+
+class EmailRequest(BaseModel):
+    """Take user email to look up the security question"""
+
+    email: EmailStr
+
+
+class ForgotPassword(BaseModel):
+    """Change password via security question"""
+
+    email: EmailStr
+    answer: str
+    new_password: str = Field(min_length=8)
