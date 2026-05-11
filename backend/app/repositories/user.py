@@ -4,7 +4,7 @@ from app.models import User
 from app.repositories.base import BaseRepository
 
 class UserRepository(BaseRepository[User]):
-    """ Database actions related to users"""
+    """Database actions related to users"""
 
     # use User as model
     model = User
