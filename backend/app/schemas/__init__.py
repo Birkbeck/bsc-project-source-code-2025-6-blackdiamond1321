@@ -2,6 +2,7 @@
 
 from app.schemas.user import TokenResponse, UserCreate, UserResponse, UserLogin, EmailRequest, ForgotPassword
 from app.schemas.transaction import TransactionCreate, TransactionResponse
+from app.schemas.budget import BudgetCreate, BudgetResponse
 
 __all__ = [
     "UserCreate",
@@ -12,4 +13,6 @@ __all__ = [
     "ForgotPassword",
     "TransactionCreate",
     "TransactionResponse",
+    "BudgetCreate",
+    "BudgetResponse"
 ]
