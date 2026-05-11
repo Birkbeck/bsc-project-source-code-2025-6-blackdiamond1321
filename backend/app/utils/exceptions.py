@@ -46,7 +46,7 @@ class InvalidCredentialsError(AuthError):
     detail = "Invalid email or password"
 
 
-# 404. If account not registered
+# 404. If account not registered or service does not exist
 
 class NotFoundError(DomainError):
     status_code = 404
@@ -55,3 +55,7 @@ class NotFoundError(DomainError):
 class UserNotFoundError(NotFoundError):
     """Raised when no account exists with the given email"""
     detail = "No account found with this email"
+
+class TransactionNotFoundError(NotFoundError):
+    """Raised when a transaction does not exist"""
+    detail = "Transaction not found"
