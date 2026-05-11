@@ -7,8 +7,8 @@ from fastapi.security import OAuth2PasswordBearer
 from app.core.config import settings
 from app.core.security import Argon2PasswordHasher, JWTAuthToken
 from app.database import get_db
-from app.repositories import UserRepository, TransactionRepository
-from app.services import UserService, TransactionService
+from app.repositories import UserRepository, TransactionRepository, BudgetRepository
+from app.services import UserService, TransactionService, BudgetService
 from app.models.user import User
 from app.interfaces import IAuthToken
 
@@ -30,6 +30,10 @@ def get_user_service(db: Session = Depends(get_db)) -> UserService:
 def get_transaction_service(db: Session = Depends(get_db)) -> TransactionService:
     """Build a TransactionService"""
     return TransactionService(transactions=TransactionRepository(db))
+
+def get_budget_service(db: Session = Depends(get_db)) -> BudgetService:
+    """Build a BudgetService"""
+    return BudgetService(budgets=BudgetRepository(db))
 
 def get_current_user(
     token: str = Depends(oauth2_scheme),
