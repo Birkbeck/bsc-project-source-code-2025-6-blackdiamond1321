@@ -30,7 +30,7 @@ VALID_TRANSACTION = {
 
 
 def register_and_login(client, user=VALID_USER):
-    """Register a user, login, return auth headers."""
+    """Register a user and login"""
     client.post("/api/users/register", json=user)
     response = client.post(
         "/api/users/login",
