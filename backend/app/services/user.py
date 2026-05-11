@@ -4,7 +4,12 @@ from app.interfaces import IAuthToken, IPasswordHasher
 from app.models import User
 from app.repositories import UserRepository
 from app.schemas import TokenResponse, UserCreate, UserResponse, UserLogin
-from app.utils.exceptions import IncorrectAnswerError, UserNotFoundError, InvalidCredentialsError, EmailExistsError
+from app.utils.exceptions import (
+    IncorrectAnswerError,
+    UserNotFoundError,
+    InvalidCredentialsError,
+    EmailExistsError,
+    InvalidEmailOrAnswerError)
 
 class UserService:
     """Business logic for user account operations"""
@@ -65,11 +70,11 @@ class UserService:
         """Check if the security answer is the same and reset the password"""
         user = self._users.find_by_email(email)
         if not user:
-            raise UserNotFoundError()
+            raise InvalidEmailOrAnswerError()
 
         # # make the typed answer lowercase and remove any whitespaces
         if user.security_answer != answer.strip().lower():
-            raise IncorrectAnswerError()
+            raise InvalidEmailOrAnswerError()
 
         user.password_hash = self._hasher.hash(new_password)
         self._users.update(user)

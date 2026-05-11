@@ -7,13 +7,12 @@ Commons codes:
 404 Not Found
 """
 
-from fastapi import APIRouter, Depends, HTTPException, status
+from fastapi import APIRouter, Depends, status
 from fastapi.security import OAuth2PasswordRequestForm
 
 from app.core.dependencies import get_user_service, get_current_user
 from app.schemas import TokenResponse, UserCreate, UserLogin, UserResponse, EmailRequest, ForgotPassword
 from app.services.user import UserService
-from app.utils.exceptions import IncorrectAnswerError, UserNotFoundError, InvalidCredentialsError, EmailExistsError
 
 from app.models import User
 
@@ -30,10 +29,7 @@ def register(
     service: UserService = Depends(get_user_service),
 ) -> TokenResponse:
     """Create a new user account and return a session token"""
-    try:
-        return service.register(data)
-    except EmailExistsError as e:
-        raise HTTPException(status_code=400, detail=str(e))
+    return service.register(data)
 
 @router.post("/login", response_model=TokenResponse)
 def login(
@@ -41,14 +37,11 @@ def login(
     service: UserService = Depends(get_user_service),
 ) -> TokenResponse:
     """Log in with email and password and return a token"""
-    try:
-        return service.login(UserLogin(
+    return service.login(UserLogin(
             # In OAuth2 the field is username
             email=form_data.username,
             password=form_data.password,
         ))
-    except InvalidCredentialsError as e:
-        raise HTTPException(status_code=401, detail=str(e))
 
 
 @router.get("/me", response_model=UserResponse)
@@ -62,11 +55,9 @@ def forgot_question(
     service: UserService = Depends(get_user_service),
 ) -> dict:
     """Return the security question for the email"""
-    try:
-        question = service.get_security_question(data.email)
-        return {"question": question}
-    except UserNotFoundError as e:
-        raise HTTPException(status_code=404, detail=str(e))
+    question = service.get_security_question(data.email)
+    return {"question": question}
+
 
 
 @router.post("/reset-password")
@@ -75,8 +66,5 @@ def reset_password(
     service: UserService = Depends(get_user_service),
 ) -> dict:
     """Reset password by answering the question"""
-    try:
-        service.reset_password(data.email, data.answer, data.new_password)
-        return {"message": "Password reset successfully"}
-    except (UserNotFoundError, IncorrectAnswerError):
-        raise HTTPException(status_code=400, detail="Invalid email or answer")
+    service.reset_password(data.email, data.answer, data.new_password)
+    return {"message": "Password reset successfully"}

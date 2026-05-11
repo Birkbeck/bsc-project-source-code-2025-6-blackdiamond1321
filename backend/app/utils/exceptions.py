@@ -29,6 +29,12 @@ class IncorrectAnswerError(ValidationError):
     detail = "Incorrect security answer"
 
 
+class InvalidEmailOrAnswerError(ValidationError):
+    """Raised by reset-password. Error for wrong email or wrong answer"""
+
+    detail = "Invalid email or answer"
+
+
 # 401. The user used wrong credentials
 
 class AuthError(DomainError):
