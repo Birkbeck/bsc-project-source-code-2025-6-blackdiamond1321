@@ -4,6 +4,7 @@ from fastapi import FastAPI, Request
 from starlette.responses import JSONResponse
 
 from app.routers import users
+from app.routers import transactions
 from app.utils.exceptions import DomainError
 
 # create FastAPI app instance
@@ -17,6 +18,7 @@ async def domain_error(request: Request, exc: DomainError) -> JSONResponse:
         content={"detail": exc.detail},
     )
 app.include_router(users.router)
+app.include_router(transactions.router)
 
 @app.get("/health", summary="Health Check", description="Check if the API is running")
 def health():
