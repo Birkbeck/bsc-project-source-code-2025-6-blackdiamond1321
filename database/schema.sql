@@ -18,7 +18,6 @@ CREATE TABLE IF NOT EXISTS users (
     created_at DATETIME DEFAULT CURRENT_TIMESTAMP
 ) ENGINE=InnoDB;
 
-
 # transactions: income or expenses
 
 CREATE TABLE IF NOT EXISTS transactions (
@@ -31,4 +30,15 @@ CREATE TABLE IF NOT EXISTS transactions (
     method VARCHAR(50) NOT NULL,
     date VARCHAR(10) NOT NULL,
     FOREIGN KEY (user_id) REFERENCES users(id)
+) ENGINE=InnoDB;
+
+# budgets: monthly spending limit per category
+
+CREATE TABLE IF NOT EXISTS budgets (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    user_id INT NOT NULL,
+    category VARCHAR(50) NOT NULL,
+    monthly_limit FLOAT NOT NULL,
+    FOREIGN KEY (user_id) REFERENCES users(id),
+    UNIQUE KEY unique_user_category (user_id, category)
 ) ENGINE=InnoDB;
