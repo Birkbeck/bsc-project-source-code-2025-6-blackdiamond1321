@@ -59,3 +59,7 @@ class UserNotFoundError(NotFoundError):
 class TransactionNotFoundError(NotFoundError):
     """Raised when a transaction does not exist"""
     detail = "Transaction not found"
+
+class BudgetNotFoundError(NotFoundError):
+    """Raised when a budget does not exist"""
+    detail = "Budget not found"
