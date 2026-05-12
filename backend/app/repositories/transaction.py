@@ -25,3 +25,15 @@ class TransactionRepository(BaseRepository[Transaction]):
             .filter(Transaction.user_id == user_id)
             .all()
         )
+
+    def list_for_user_in_month(self, user_id: int, year: int, month: int) -> list[Transaction]:
+        """Get user's transactions for a specific month"""
+        prefix = f"{year}-{month:02d}"
+        return (
+            self._db.query(Transaction)
+            .filter(
+                Transaction.user_id == user_id,
+                Transaction.date.like(prefix + "%"),
+            )
+            .all()
+        )
