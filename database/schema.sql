@@ -80,6 +80,6 @@ CREATE TABLE IF NOT EXISTS payments (
 CREATE TABLE IF NOT EXISTS payment_sources (
     id INT AUTO_INCREMENT PRIMARY KEY,
     user_id INT NOT NULL,
-    name VARCHAR(64) NOT NULL,
+    name VARCHAR(32) NOT NULL,
     FOREIGN KEY (user_id) REFERENCES users(id)
 ) ENGINE=InnoDB;

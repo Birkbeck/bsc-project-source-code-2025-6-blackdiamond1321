@@ -69,5 +69,9 @@ class BudgetNotFoundError(NotFoundError):
     detail = "Budget not found"
 
 class LoanNotFoundError(NotFoundError):
-    """Raised when a loan doesn't exist"""
+    """Raised when a loan does not exist"""
     detail = "Loan not found"
+
+class PaymentSourceNotFoundError(NotFoundError):
+    """Raised when a payment source does not exist"""
+    detail = "Payment source not found"
