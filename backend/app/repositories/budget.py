@@ -7,6 +7,7 @@ from app.repositories.base import BaseRepository
 class BudgetRepository(BaseRepository[Budget]):
     """Read and save budgets in the database"""
 
+    # use Budget model
     model = Budget
 
     def find_by_category(self, user_id: int, category: str) -> Budget | None:
