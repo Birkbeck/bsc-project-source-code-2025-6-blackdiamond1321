@@ -42,3 +42,34 @@ CREATE TABLE IF NOT EXISTS budgets (
     FOREIGN KEY (user_id) REFERENCES users(id),
     UNIQUE KEY unique_user_category (user_id, category)
 ) ENGINE=InnoDB;
+
+
+# loans: money the user has lent to a third party
+
+CREATE TABLE IF NOT EXISTS loans (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    user_id INT NOT NULL,
+    borrower VARCHAR(255) NOT NULL,
+    principal FLOAT NOT NULL,
+    interest_rate FLOAT DEFAULT 0,
+    currency VARCHAR(3) DEFAULT 'GBP',
+    borrowed_at VARCHAR(10) NOT NULL,
+    paid_at VARCHAR(10) DEFAULT '',
+    is_paid BOOLEAN DEFAULT FALSE,
+    amount_paid FLOAT DEFAULT 0,
+    FOREIGN KEY (user_id) REFERENCES users(id)
+) ENGINE=InnoDB;
+
+
+# payments: repayments against a loan
+
+CREATE TABLE IF NOT EXISTS payments (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    loan_id INT NOT NULL,
+    amount FLOAT NOT NULL,
+    currency VARCHAR(3) NOT NULL,
+    loan_currency VARCHAR(3) NOT NULL,
+    exchange_rate FLOAT DEFAULT 1.0,
+    paid_at VARCHAR(10) NOT NULL,
+    FOREIGN KEY (loan_id) REFERENCES loans(id)
+) ENGINE=InnoDB;
