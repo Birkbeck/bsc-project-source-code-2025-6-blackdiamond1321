@@ -63,3 +63,7 @@ class TransactionNotFoundError(NotFoundError):
 class BudgetNotFoundError(NotFoundError):
     """Raised when a budget does not exist"""
     detail = "Budget not found"
+
+class LoanNotFoundError(NotFoundError):
+    """Raised when a loan doesn't exist"""
+    detail = "Loan not found"
