@@ -34,6 +34,10 @@ class InvalidEmailOrAnswerError(ValidationError):
 
     detail = "Invalid email or answer"
 
+class OverpaymentError(ValidationError):
+    """Raised when a payment exceed the loan's outstanding balance"""
+    detail = "Payment exceeds loan balance"
+
 
 # 401. The user used wrong credentials
 
