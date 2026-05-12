@@ -5,6 +5,7 @@ from app.schemas.transaction import TransactionCreate, TransactionResponse
 from app.schemas.budget import BudgetCreate, BudgetResponse
 from app.schemas.loan import LoanCreate, LoanResponse
 from app.schemas.payment import PaymentCreate, PaymentResponse
+from app.schemas.summary import MonthlySummary, CategoryBreakdown
 
 __all__ = [
     "UserCreate",
@@ -21,4 +22,6 @@ __all__ = [
     "LoanResponse",
     "PaymentCreate",
     "PaymentResponse",
+    "MonthlySummary",
+    "CategoryBreakdown"
 ]

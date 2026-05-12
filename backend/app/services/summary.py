@@ -2,6 +2,7 @@
 
 from app.models import User
 from app.repositories import TransactionRepository
+from app.schemas import CategoryBreakdown, MonthlySummary
 
 
 class SummaryService:
@@ -23,12 +24,12 @@ class SummaryService:
             if t.type == "expense":
                 by_category[t.category] = by_category.get(t.category, 0.0) + t.amount
 
-        return {
-            "income_total": income_total,
-            "expense_total": expense_total,
-            "net": income_total - expense_total,
-            "by_category": [
-                {"category": cat, "total": total}
+        return MonthlySummary(
+            income_total=income_total,
+            expense_total=expense_total,
+            net=income_total - expense_total,
+            by_category=[
+                CategoryBreakdown(category=cat, total=total)
                 for cat, total in by_category.items()
             ],
-        }
+        )
