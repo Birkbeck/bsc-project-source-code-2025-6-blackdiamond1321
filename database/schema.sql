@@ -73,3 +73,13 @@ CREATE TABLE IF NOT EXISTS payments (
     paid_at VARCHAR(10) NOT NULL,
     FOREIGN KEY (loan_id) REFERENCES loans(id)
 ) ENGINE=InnoDB;
+
+
+# payment sources: user-owned payment methods
+
+CREATE TABLE IF NOT EXISTS payment_sources (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    user_id INT NOT NULL,
+    name VARCHAR(64) NOT NULL,
+    FOREIGN KEY (user_id) REFERENCES users(id)
+) ENGINE=InnoDB;
