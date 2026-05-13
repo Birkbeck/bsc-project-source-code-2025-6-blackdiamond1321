@@ -241,6 +241,116 @@ nav.scrolled {
     font-size: 14px;
 }
 
+/*Modal*/
+
+.modal-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.6);
+    backdrop-filter: blur(8px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+    padding: 20px;
+}
+
+.modal {
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    padding: 40px;
+    width: 100%;
+    max-width: 440px;
+    position: relative;
+    box-shadow: 0 40px 80px rgba(0, 0, 0, 0.5);
+}
+
+.modal-close {
+    position: absolute;
+    top: 16px;
+    right: 16px;
+    width: 32px;
+    height: 32px;
+    border: none;
+    background: transparent;
+    color: var(--text2);
+    font-size: 24px;
+    cursor: pointer;
+    border-radius: 8px;
+    transition: all 0.2s;
+}
+.modal-close:hover {
+    background: var(--card);
+    color: var(--text);
+}
+
+.modal-title {
+    font-family: var(--heading);
+    font-size: 28px;
+    font-weight: 600;
+    margin-bottom: 8px;
+}
+
+.modal-subtitle {
+    color: var(--text2);
+    font-size: 14px;
+    margin-bottom: 28px;
+}
+
+.modal-form {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.field {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+.field-label {
+    font-size: 13px;
+    color: var(--text2);
+    font-weight: 500;
+}
+.field input {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 12px 14px;
+    color: var(--text);
+    font-family: var(--body);
+    font-size: 14px;
+    transition: border-color 0.2s;
+}
+.field input:focus {
+    outline: none;
+    border-color: var(--accent);
+}
+
+.modal-error {
+    background: rgba(239, 68, 68, 0.1);
+    border: 1px solid rgba(239, 68, 68, 0.3);
+    color: var(--red);
+    padding: 10px 14px;
+    border-radius: 8px;
+    font-size: 13px;
+}
+
+.modal-footer-text {
+    text-align: center;
+    color: var(--text2);
+    font-size: 14px;
+    margin-top: 20px;
+}
+.modal-footer-text a {
+    color: var(--accent);
+    text-decoration: none;
+}
+.modal-footer-text a:hover {
+    text-decoration: underline;
+}
 
 /*Responsive*/
 

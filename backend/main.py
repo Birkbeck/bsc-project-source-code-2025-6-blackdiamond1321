@@ -38,6 +38,7 @@ PROJECT_ROOT = os.path.join(os.path.dirname(__file__), "..")
 FRONTEND = os.path.join(PROJECT_ROOT, "frontend")
 PUBLIC_PAGES = os.path.join(FRONTEND, "templates", "public")
 IMAGES = os.path.join(PROJECT_ROOT, "images")
+MODALS = os.path.join(FRONTEND, "templates", "modals")
 
 # Mount to static folder
 app.mount("/static", StaticFiles(directory=os.path.join(FRONTEND, "static")), name="static")
@@ -51,6 +52,14 @@ def landing():
     """Landing page"""
     return FileResponse(os.path.join(PUBLIC_PAGES, "index.html"))
 
+@app.get("/modals/{name}")
+def modal(name: str):
+    """Modals templates"""
+    safe_name = os.path.basename(name)
+    path = os.path.join(MODALS, f"{safe_name}.html")
+    if not os.path.isfile(path):
+        return JSONResponse(status_code=404, content={"detail": "Modal not found"})
+    return FileResponse(path)
 
 @app.get("/health", summary="Health Check", description="Check if the API is running")
 def health():
