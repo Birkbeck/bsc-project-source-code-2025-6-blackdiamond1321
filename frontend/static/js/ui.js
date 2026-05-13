@@ -67,9 +67,11 @@ modalRoot.addEventListener('submit', async (event) => {
 
     if (form.id === 'login_form')    await loginUser(form);
     if (form.id === 'register_form') await registerUser(form);
+    if (form.id === 'forgot_step1_form')  await forgotStep1(form);
+    if (form.id === 'forgot_step2_form')  await forgotStep2(form);
 });
 
-/* Show an error message inside */
+/* Show an error message */
 const showError = (form, message) => {
     const errorDiv = form.querySelector('.modal-error');
     if (!errorDiv) return;
@@ -102,9 +104,40 @@ const registerUser = async (form) => {
     }
 };
 
-/* Live password requirements — three states: untouched (○), failed (✗), passed (✓) */
+/* Forgot password */
+/* Step 1 */
+const forgotStep1 = async (form) => {
+    const data = readForm(form);
+    try {
+        const result = await api.forgotQuestion(data.email);
+
+        /* Show question, hide step 1 form, reveal step 2 form */
+        document.getElementById('forgot_question').textContent = result.question;
+        document.getElementById('forgot_step1_form').hidden = true;
+
+        const step2 = document.getElementById('forgot_step2_form');
+        step2.hidden = false;
+        step2.dataset.email = data.email;
+    } catch (err) {
+        showError(form, err.message);
+    }
+};
+
+/* Step 2 */
+const forgotStep2 = async (form) => {
+    const data = readForm(form);
+    const email = form.dataset.email;
+    try {
+        await api.resetPassword(email, data.answer, data.new_password);
+        openModal('login');
+    } catch (err) {
+        showError(form, err.message);
+    }
+};
+
+/* Password requirements */
 modalRoot.addEventListener('input', (event) => {
-    if (event.target.name !== 'password') return;
+    if (event.target.name !== 'password' && event.target.name !== 'new_password') return;
 
     const rules = event.target.closest('.field')?.querySelector('.password-rules');
     if (!rules) return;
@@ -122,12 +155,29 @@ modalRoot.addEventListener('input', (event) => {
         if (!li) continue;
 
         if (value.length === 0) {
-            /* Empty field — reset to neutral state (○) */
+            /* Empty field */
             li.classList.remove('valid', 'invalid');
         } else {
-            /* User has typed — show pass or fail */
+            /* User has typed */
             li.classList.toggle('valid', ok);
             li.classList.toggle('invalid', !ok);
         }
+    }
+});
+
+modalRoot.addEventListener('click', (event) => {
+
+    /* Go to forgot password from login */
+    if (event.target.id === 'go_to_forgot') {
+        event.preventDefault();
+        openModal('forgot');
+        return;
+    }
+
+    /* Go to login from forgot password */
+    if (event.target.id === 'go_to_login_from_forgot') {
+        event.preventDefault();
+        openModal('login');
+        return;
     }
 });

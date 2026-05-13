@@ -1,0 +1,51 @@
+<!-- Forgot password consist of 2 steps --> >
+<div class="modal-overlay" id="forgot_modal">
+    <div class="modal">
+        <button class="modal-close" id="forgot_close" aria-label="Close">&times;</button>
+
+        <h2 class="modal-title">Reset Password</h2>
+        <p class="modal-subtitle">
+            Remember your password? <a href="#" id="go_to_login_from_forgot">Log in</a>
+        </p>
+
+        <!-- Step 1: enter email and check if email in the database -->-->
+        <form id="forgot_step1_form" class="modal-form">
+            <label class="field">
+                <span class="field-label">Email address</span>
+                <input type="email" name="email" required autocomplete="email">
+            </label>
+
+            <div class="modal-error" id="forgot_step1_error" hidden></div>
+
+            <button type="submit" class="btn btn--primary btn--full">Next</button>
+        </form>
+
+        <!-- Step 2: answer the question and set a new password -->
+        <form id="forgot_step2_form" class="modal-form" hidden>
+            <div class="field">
+                <span class="field-label">Security question</span>
+                <p class="forgot-question" id="forgot_question"></p>
+            </div>
+
+            <label class="field">
+                <span class="field-label">Your answer</span>
+                <input type="text" name="answer" required autocomplete="off">
+            </label>
+
+            <label class="field">
+                <span class="field-label">New password</span>
+                <ul class="password-rules">
+                    <li data-rule="length">At least 8 characters</li>
+                    <li data-rule="symbol">At least one symbol (eg ?!£%)</li>
+                    <li data-rule="capital">At least one capital letter</li>
+                    <li data-rule="digit">At least one digit</li>
+                </ul>
+                <input type="password" name="new_password" required autocomplete="new-password" minlength="8">
+            </label>
+
+            <div class="modal-error" id="forgot_step2_error" hidden></div>
+
+            <button type="submit" class="btn btn--primary btn--full">Reset password</button>
+        </form>
+    </div>
+</div>
