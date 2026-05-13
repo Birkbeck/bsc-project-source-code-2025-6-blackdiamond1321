@@ -37,6 +37,7 @@ app.include_router(payment_sources.router)
 PROJECT_ROOT = os.path.join(os.path.dirname(__file__), "..")
 FRONTEND = os.path.join(PROJECT_ROOT, "frontend")
 PUBLIC_PAGES = os.path.join(FRONTEND, "templates", "public")
+PRIVATE_PAGES = os.path.join(FRONTEND, "templates", "private")
 IMAGES = os.path.join(PROJECT_ROOT, "images")
 MODALS = os.path.join(FRONTEND, "templates", "modals")
 
@@ -60,6 +61,11 @@ def modal(name: str):
     if not os.path.isfile(path):
         return JSONResponse(status_code=404, content={"detail": "Modal not found"})
     return FileResponse(path)
+
+@app.get("/dashboard")
+def dashboard():
+    """Dashboard page. Auth check is client-side in dashboard.js"""
+    return FileResponse(os.path.join(PRIVATE_PAGES, "dashboard.html"))
 
 @app.get("/health", summary="Health Check", description="Check if the API is running")
 def health():

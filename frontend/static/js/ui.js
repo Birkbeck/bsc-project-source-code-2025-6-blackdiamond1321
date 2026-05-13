@@ -158,7 +158,7 @@ modalRoot.addEventListener('input', (event) => {
             /* Empty field */
             li.classList.remove('valid', 'invalid');
         } else {
-            /* User has typed */
+            /* User has followed rules */
             li.classList.toggle('valid', ok);
             li.classList.toggle('invalid', !ok);
         }
