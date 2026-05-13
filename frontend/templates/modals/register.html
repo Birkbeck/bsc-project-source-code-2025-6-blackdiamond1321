@@ -23,6 +23,12 @@
 
             <label class="field">
                 <span class="field-label">Password</span>
+                <ul class="password-rules">
+                    <li data-rule="length">At least 8 characters</li>
+                    <li data-rule="symbol">At least one symbol (eg ?!£%)</li>
+                    <li data-rule="capital">At least one capital letter</li>
+                    <li data-rule="digit">At least one digit</li>
+                </ul>
                 <input type="password" name="password" required autocomplete="new-password" minlength="8">
             </label>
 

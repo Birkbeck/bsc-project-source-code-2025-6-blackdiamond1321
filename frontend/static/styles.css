@@ -399,32 +399,49 @@ nav.scrolled {
     text-decoration: underline;
 }
 
-/*Responsive*/
+/* Password rules */
 
-@media (max-width: 900px) {
-    .hero-inner {
-        grid-template-columns: 1fr;
-    }
-
-    .hero-visual {
-        display: none;
-    }
+.password-rules {
+    list-style: none;
+    padding: 0;
+    margin-top: 10px;
+    font-size: 12px;
+    color: var(--text2);
 }
-@media (max-width: 600px) {
-    nav {
-        padding: 14px 20px;
-    }
+.password-rules li {
+    padding-left: 20px;
+    position: relative;
+    line-height: 1.8;
+    transition: color 0.2s;
+}
+.password-rules li::before {
+    content: '\25CB';
+    position: absolute;
+    left: 0;
+    top: 4px;
+    font-size: 10px;
+    color: var(--muted);
+    transition: color 0.2s;
+}
 
-    .hero {
-        padding: 100px 20px 60px;
-    }
+/* Passed */
+.password-rules li.valid {
+    color: var(--accent);
+}
+.password-rules li.valid::before {
+    content: '\2713';
+    font-size: 12px;
+    top: 2px;
+    color: var(--accent);
+}
 
-    .hero-buttons {
-        flex-direction: column;
-        align-items: stretch;
-    }
-
-    .field-row {
-        grid-template-columns: 1fr;
-    }
+/* Failed */
+.password-rules li.invalid {
+    color: var(--red);
+}
+.password-rules li.invalid::before {
+    content: '\2717';
+    font-size: 12px;
+    top: 2px;
+    color: var(--red);
 }
