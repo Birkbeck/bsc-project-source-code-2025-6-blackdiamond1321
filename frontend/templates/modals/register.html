@@ -1,0 +1,56 @@
+<div class="modal-overlay" id="register_modal">
+    <div class="modal modal--wide">
+        <button class="modal-close" id="register_close" aria-label="Close">&times;</button>
+        <h2 class="modal-title">Create Your Account</h2>
+        <p class="modal-subtitle">Start tracking your finances</p>
+
+        <form id="register_form" class="modal-form">
+            <div class="field-row">
+                <label class="field">
+                    <span class="field-label">First name</span>
+                    <input type="text" name="first_name" required autocomplete="given-name">
+                </label>
+                <label class="field">
+                    <span class="field-label">Last name</span>
+                    <input type="text" name="last_name" required autocomplete="family-name">
+                </label>
+            </div>
+
+            <label class="field">
+                <span class="field-label">Email</span>
+                <input type="email" name="email" required autocomplete="email">
+            </label>
+
+            <label class="field">
+                <span class="field-label">Password</span>
+                <input type="password" name="password" required autocomplete="new-password" minlength="8">
+            </label>
+
+            <label class="field">
+                <span class="field-label">Security question</span>
+                <div class="select-wrapper">
+                    <select name="security_question" required>
+                        <option value="" disabled selected>Choose a question</option>
+                        <option>What was the name of your first pet?</option>
+                        <option>What is your mother's maiden name?</option>
+                        <option>What is the last name of your favourite teacher primary school teacher?</option>
+                        <option>What city were you born in?</option>
+                        <option>What is your favourite movie?</option>
+                    </select>
+                </div>
+            </label>
+
+            <label class="field">
+                <span class="field-label">Answer</span>
+                <input type="text" name="security_answer" required autocomplete="off">
+            </label>
+
+            <div class="modal-error" id="register_error" hidden></div>
+
+            <button type="submit" class="btn btn--primary btn--full">Create Account</button>
+        </form>
+
+        <p class="modal-footer-text">Already have an account? <a href="#" id="switch_to_login">Log in</a>
+        </p>
+    </div>
+</div>

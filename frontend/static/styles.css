@@ -34,6 +34,13 @@ body {
     min-height: 100vh;
 }
 
+.highlight {
+    background: linear-gradient(135deg, var(--accent), var(--cyan));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
 /*Buttons*/
 
 .btn {
@@ -60,7 +67,8 @@ body {
     transform: translateY(-2px);
     box-shadow: 0 8px 32px var(--glow);
 }
-.btn--ghost { background: none;
+.btn--ghost {
+    background: none;
     color: var(--text2);
     border: 1px solid rgba(255,255,255,0.12);
 }
@@ -77,7 +85,8 @@ body {
     width: 100%;
     padding: 16px;
     border-radius: 12px;
-    font-size: 15px; }
+    font-size: 15px;
+}
 
 
 /*Logo and Navigation*/
@@ -202,13 +211,6 @@ nav.scrolled {
     margin-bottom: 24px;
 }
 
-.hero h1 .highlight {
-    background: linear-gradient(135deg, var(--accent), var(--cyan));
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-}
-
 .hero p {
     font-size: 18px;
     color: var(--text2);
@@ -264,6 +266,10 @@ nav.scrolled {
     max-width: 440px;
     position: relative;
     box-shadow: 0 40px 80px rgba(0, 0, 0, 0.5);
+}
+
+.modal--wide {
+    max-width: 520px;
 }
 
 .modal-close {
@@ -329,6 +335,47 @@ nav.scrolled {
     border-color: var(--accent);
 }
 
+.field-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+}
+
+.select-wrapper {
+    position: relative;
+}
+
+.select-wrapper::after {
+    content: '\25BC';
+    position: absolute;
+    right: 14px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--text2);
+    font-size: 11px;
+    pointer-events: none;
+}
+
+.field select {
+    width: 100%;
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 12px 36px 12px 14px;
+    color: var(--text);
+    font-family: var(--body);
+    font-size: 14px;
+    cursor: pointer;
+    transition: border-color 0.2s;
+    appearance: none;
+
+}
+
+.field select:focus {
+    outline: none;
+    border-color: var(--accent);
+}
+
 .modal-error {
     background: rgba(239, 68, 68, 0.1);
     border: 1px solid rgba(239, 68, 68, 0.3);
@@ -375,5 +422,9 @@ nav.scrolled {
     .hero-buttons {
         flex-direction: column;
         align-items: stretch;
+    }
+
+    .field-row {
+        grid-template-columns: 1fr;
     }
 }
