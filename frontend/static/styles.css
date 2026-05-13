@@ -1,4 +1,4 @@
-/* ----- CSS variables --------------------------------------------------- */
+/*CSS variables*/
 
 :root {
     /* navy from logo */
@@ -90,4 +90,71 @@ nav {
 
 #register_btn:hover {
     background: #1a2a4d;
+}
+
+/*Hero*/
+
+.hero {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: var(--space-xl) var(--space-lg);
+    text-align: center;
+}
+
+.hero h1 {
+    font-size: 2.5rem;
+    color: var(--color-primary);
+    margin-bottom: var(--space-md);
+}
+
+.hero p {
+    font-size: 1.15rem;
+    color: var(--color-text-muted);
+    margin-bottom: var(--space-lg);
+}
+
+.primary-btn {
+    padding: 0.75rem 2rem;
+    background: var(--color-accent);
+    color: var(--color-primary);
+    border: none;
+    border-radius: var(--radius);
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    font-family: inherit;
+}
+
+.primary-btn:hover {
+    filter: brightness(0.95);
+}
+
+
+/*Responsive*/
+
+@media (max-width: 600px) {
+    header {
+        padding: var(--space-sm) var(--space-md);
+    }
+
+    .logo img {
+        height: 32px;
+    }
+
+    .auth button {
+        padding: 0.4rem 0.8rem;
+        font-size: 0.85rem;
+    }
+
+    .hero {
+        padding: var(--space-lg) var(--space-md);
+    }
+
+    .hero h1 {
+        font-size: 1.75rem;
+    }
+
+    .hero p {
+        font-size: 1rem;
+    }
 }
