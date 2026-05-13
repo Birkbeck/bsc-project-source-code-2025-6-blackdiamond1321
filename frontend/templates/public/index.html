@@ -5,26 +5,45 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Fintrack</title>
     <link rel="icon" type="image/png" href="/images/logo/icon.png">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="/static/styles.css">
 </head>
 <body>
-    <header>
-        <nav>
-            <a href="/" class="logo">
-                <img src="/images/logo/logo.png" alt="Fintrack">
-            </a>
-            <div class="auth">
-                <button id="login_btn">Log In</button>
-                <button id="register_btn">Register</button>
+    <!--Background glow orbs-->
+    <div class="glow-orb glow-orb--tl"></div>
+    <div class="glow-orb glow-orb--tr"></div>
+    <div class="glow-orb glow-orb--bl"></div>
+    <div class="glow-orb glow-orb--br"></div>
+
+    <!--Navigation-->
+    <nav>
+        <a href="/" class="logo">
+            <img src="/images/logo/icon.png" alt="" class="logo-icon-img">
+            <span class="logo-text">FinTrack</span>
+        </a>
+        <div class="nav-cta">
+            <button class="btn btn--ghost" id="login_btn">Log In</button>
+            <button class="btn btn--primary" id="register_btn">Register</button>
+        </div>
+    </nav>
+
+    <!-- Hero -->
+    <section class="hero">
+        <div class="hero-inner">
+            <div class="hero-content">
+                <h1>Take Control<br>of Your <span class="highlight">Finances</span></h1>
+                <p>Track income and expenses across cash, debit, and credit. Set budgets and monitor loans.</p>
+                <div class="hero-buttons">
+                    <button class="btn btn--primary btn--large" id="get_str_btn">Create Your Account</button>
+                    <a href="/" class="btn btn--ghost btn--large">Learn More</a>
+                </div>
             </div>
-        </nav>
-    </header>
-    <main>
-        <section class="hero">
-            <h1>Track your money, stay in control</h1>
-            <p>Record income and expenses manually across cash, debit, and credit. No bank linking required.</p>
-            <button class="primary-btn" id="get_str_btn">Get started</button>
-        </section>
-    </main>
+            <div class="hero-visual">
+                <div class="dashboard-preview">Dashboard preview</div>
+            </div>
+        </div>
+    </section>
 </body>
 </html>
