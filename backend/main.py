@@ -1,7 +1,9 @@
 """FinTrack API entry point"""
+import os
 
 from fastapi import FastAPI, Request
-from starlette.responses import JSONResponse
+from fastapi.responses import JSONResponse, FileResponse
+from fastapi.staticfiles import StaticFiles
 
 from app.routers import users
 from app.routers import transactions
@@ -13,6 +15,7 @@ from app.utils.exceptions import DomainError
 
 # create FastAPI app instance
 app = FastAPI(title="FinTrack API", version="0.1.0")
+
 
 @app.exception_handler(DomainError)
 async def domain_error(request: Request, exc: DomainError) -> JSONResponse:
@@ -27,6 +30,28 @@ app.include_router(budgets.router)
 app.include_router(loans.router)
 app.include_router(summary.router)
 app.include_router(payment_sources.router)
+
+# Linking frontend files
+
+# Paths to frontend files
+PROJECT_ROOT = os.path.join(os.path.dirname(__file__), "..")
+FRONTEND = os.path.join(PROJECT_ROOT, "frontend")
+PUBLIC_PAGES = os.path.join(FRONTEND, "templates", "public")
+IMAGES = os.path.join(PROJECT_ROOT, "images")
+
+# Mount to static folder
+app.mount("/static", StaticFiles(directory=os.path.join(FRONTEND, "static")), name="static")
+
+# Mount to images folder
+app.mount("/images", StaticFiles(directory=IMAGES), name="images")
+
+
+@app.get("/")
+def landing():
+    """Landing page"""
+    return FileResponse(os.path.join(PUBLIC_PAGES, "index.html"))
+
+
 @app.get("/health", summary="Health Check", description="Check if the API is running")
 def health():
     return {"status": "ok"}
