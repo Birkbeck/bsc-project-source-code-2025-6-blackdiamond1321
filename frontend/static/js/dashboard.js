@@ -27,4 +27,10 @@ const showUser = (user) => {
     if (el) el.textContent = `Hi, ${user.first_name}`;
 };
 
+/* Log out and redirect to landing */
+document.getElementById('logout_btn')?.addEventListener('click', () => {
+    api.token.clear();
+    window.location.href = '/';
+});
+
 checkAuth();
