@@ -90,6 +90,16 @@ body {
     font-size: 15px;
 }
 
+.btn--danger {
+    background: none;
+    color: var(--red);
+    border: 1px solid rgba(239, 68, 68, 0.3);
+}
+.btn--danger:hover {
+    background: rgba(239, 68, 68, 0.1);
+    border-color: var(--red);
+}
+
 
 /*Logo and Navigation*/
 
@@ -137,6 +147,13 @@ nav.scrolled {
 .nav-cta {
     display: flex;
     gap: 12px;
+    align-items: center;
+}
+
+.nav-user {
+    color: var(--text2);
+    font-size: 14px;
+    font-weight: 500;
 }
 
 .glow-orb {
