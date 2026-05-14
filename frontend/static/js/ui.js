@@ -26,7 +26,7 @@ document.getElementById('get_str_btn')?.addEventListener('click', () => openModa
 /* Click actions inside modals */
 
 modalRoot.addEventListener('click', (event) => {
-    /* Click on the dark overlay (not its children) → close */
+    /* Click on the overlay to close */
     if (event.target.classList.contains('modal-overlay')) {
         closeModal();
         return;
@@ -82,12 +82,14 @@ const showError = (form, message) => {
 /* Read form fields */
 const readForm = (form) => Object.fromEntries(new FormData(form));
 
+
 const loginUser = async (form) => {
     const data = readForm(form);
     try {
         const result = await api.login(data.email, data.password);
         api.token.set(result.access_token);
         closeModal();
+        window.location.href = '/dashboard';
     } catch (err) {
         showError(form, err.message);
     }
@@ -99,6 +101,7 @@ const registerUser = async (form) => {
         const result = await api.register(data);
         api.token.set(result.access_token);
         closeModal();
+        window.location.href = '/dashboard';
     } catch (err) {
         showError(form, err.message);
     }
