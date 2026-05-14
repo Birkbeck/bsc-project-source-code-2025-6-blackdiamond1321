@@ -64,8 +64,13 @@ def modal(name: str):
 
 @app.get("/dashboard")
 def dashboard():
-    """Dashboard page. Auth check is client-side in dashboard.js"""
+    """Dashboard page"""
     return FileResponse(os.path.join(PRIVATE_PAGES, "dashboard.html"))
+
+@app.get("/dashboard/transactions")
+def transactions_page():
+    """Transactions page"""
+    return FileResponse(os.path.join(PRIVATE_PAGES, "transactions.html"))
 
 @app.get("/health", summary="Health Check", description="Check if the API is running")
 def health():
