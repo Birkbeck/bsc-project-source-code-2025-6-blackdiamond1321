@@ -6,9 +6,9 @@ const API_BASE = '/api';
 class TokenStore {
     #key = 'fintrack_token';
 
-    get()      { return localStorage.getItem(this.#key); }
-    set(token) { localStorage.setItem(this.#key, token); }
-    clear()    { localStorage.removeItem(this.#key); }
+    get(){ return localStorage.getItem(this.#key); }
+    set(token){ localStorage.setItem(this.#key, token); }
+    clear(){ localStorage.removeItem(this.#key); }
 }
 
 const token = new TokenStore();
