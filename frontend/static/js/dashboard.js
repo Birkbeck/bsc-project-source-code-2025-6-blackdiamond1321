@@ -2,7 +2,7 @@
 
 import { api } from './api.js';
 
-/* If not logged in (no valid token), send back to the landing page. */
+/* If not logged in (no valid token), send back to the landing */
 const checkAuth = async () => {
     /* No token redirect to landing */
     if (!api.token.get()) {
@@ -27,6 +27,14 @@ const showUser = (user) => {
     if (el) el.textContent = `Hi, ${user.first_name}`;
 };
 
+/* Show current date on dashboard */
+const showDate = () => {
+    const el = document.getElementById('dashboard_date');
+    if (!el) return;
+    const options = { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' };
+    el.textContent = new Date().toLocaleDateString('en-GB', options);
+};
+
 /* Log out and redirect to landing */
 document.getElementById('logout_btn')?.addEventListener('click', () => {
     api.token.clear();
@@ -34,3 +42,4 @@ document.getElementById('logout_btn')?.addEventListener('click', () => {
 });
 
 checkAuth();
+showDate();

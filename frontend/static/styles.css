@@ -492,6 +492,105 @@ nav.scrolled {
     font-weight: 500;
 }
 
+/* Dashboard layout */
+.dashboard-layout {
+    display: flex;
+    padding-top: 76px;
+    min-height: 100vh;
+    position: relative;
+    z-index: 1;
+}
+
+/* Sidebar */
+.sidebar {
+    width: 220px;
+    background: var(--bg2);
+    border-right: 1px solid var(--border);
+    padding: 24px 16px;
+    position: fixed;
+    top: 76px;
+    bottom: 0;
+    left: 0;
+    overflow-y: auto;
+}
+
+/* Section labels in sidebar */
+
+.sidebar-label {
+    font-size: 10px;
+    font-weight: 700;
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    padding: 0 12px;
+    margin-bottom: 10px;
+    margin-top: 20px;
+}
+.sidebar-label:first-child {
+    margin-top: 0;
+}
+
+/* Sidebar links */
+.sidebar-link {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 12px;
+    border-radius: 10px;
+    color: var(--text2);
+    text-decoration: none;
+    font-size: 14px;
+    font-weight: 500;
+    margin-bottom: 2px;
+    transition: all 0.2s;
+}
+.sidebar-link:hover {
+    background: var(--card);
+    color: var(--text);
+}
+.sidebar-link--active {
+    background: var(--card);
+    color: var(--accent);
+}
+
+.sidebar-icon {
+    width: 18px;
+    height: 18px;
+    flex-shrink: 0;
+    stroke-width: 1.5;
+}
+
+/* Main column */
+.dashboard-main {
+    flex: 1;
+    margin-left: 220px;
+    padding: 32px;
+    min-width: 0;
+}
+
+.dashboard-title {
+    font-family: var(--heading);
+    font-size: 32px;
+    font-weight: 700;
+    margin-bottom: 8px;
+}
+
+.dashboard-date {
+    color: var(--text2);
+    font-size: 14px;
+    margin-bottom: 32px;
+    text-transform: capitalize;
+}
+
+.dashboard-placeholder {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 60px;
+    text-align: center;
+    color: var(--muted);
+}
+
 /*Responsive*/
 
 @media (max-width: 900px) {
@@ -501,6 +600,15 @@ nav.scrolled {
 
     .hero-visual {
         display: none;
+    }
+
+    .sidebar {
+        display: none;
+    }
+
+    .dashboard-main {
+        margin-left: 0;
+        padding: 20px;
     }
 }
 
