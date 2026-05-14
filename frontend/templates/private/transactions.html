@@ -28,6 +28,25 @@
         <main class="dashboard-main">
             <h1 class="dashboard-title">Transactions</h1>
             <p class="dashboard-subtitle">Manage your income and expenses</p>
+            <div class="table-card">
+                <div class="table-header">
+                    <h3 class="table-title">All Transactions</h3>
+                    <span class="table-count" id="transaction_count">0 transaction</span>
+                </div>
+                <table class="transaction-table">
+                    <thead>
+                        <tr>
+                            <th>Date</th>
+                            <th>Description</th>
+                            <th>Category</th>
+                            <th>Method</th>
+                            <th class="transaction-col-amount">Amount</th>
+                            <th class="transaction-col-actions">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="transactions_body"></tbody>
+                </table>
+            </div>
         </main>
     </div>
 </body>

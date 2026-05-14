@@ -597,6 +597,121 @@ nav.scrolled {
     margin-bottom: 32px;
 }
 
+/* Table card */
+
+.table-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    overflow: hidden;
+}
+
+.table-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px 24px;
+    border-bottom: 1px solid var(--border);
+}
+
+.table-title {
+    font-family: var(--heading);
+    font-size: 18px;
+    font-weight: 600;
+}
+
+.table-count {
+    background: var(--card);
+    border: 1px solid var(--border);
+    color: var(--text2);
+    font-size: 12px;
+    padding: 4px 12px;
+    border-radius: 20px;
+}
+
+/* Transactions table */
+.transaction-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 14px;
+}
+
+.transaction-table thead th {
+    text-transform: uppercase;
+    font-size: 11px;
+    letter-spacing: 1px;
+    color: var(--muted);
+    font-weight: 600;
+    padding: 14px 24px;
+    text-align: left;
+    border-bottom: 1px solid var(--border);
+}
+
+.transaction-col-amount { text-align: right !important; }
+.transaction-col-actions { text-align: right !important; width: 100px; }
+
+.transaction-table tbody td {
+    padding: 16px 24px;
+    border-bottom: 1px solid var(--border);
+    vertical-align: middle;
+}
+.transaction-table tbody tr:last-child td {
+    border-bottom: none;
+}
+
+.transaction-date {
+    color: var(--text2);
+    font-variant-numeric: tabular-nums;
+}
+.transaction-description {
+    color: var(--text);
+    font-weight: 500;
+}
+.transaction-category span {
+    font-weight: 500;
+}
+.transaction-method {
+    color: var(--text2);
+}
+.transaction-amount {
+    text-align: right;
+    font-weight: 600;
+    font-variant-numeric: tabular-nums;
+}
+.transaction-row--income .transaction-amount {
+    color: var(--accent);
+}
+.transaction-row--expense .transaction-amount {
+    color: var(--red);
+}
+
+.transaction-actions {
+    text-align: right;
+    white-space: nowrap;
+}
+.transaction-action-btn {
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: var(--text2);
+    padding: 6px;
+    margin-left: 2px;
+    border-radius: 6px;
+    transition: all 0.2s;
+    line-height: 0;
+}
+.transaction-action-btn:hover {
+    background: var(--card-hover);
+    color: var(--text);
+}
+.transaction-action-btn[data-action="delete"]:hover {
+    color: var(--red);
+}
+.transaction-action-btn svg {
+    width: 16px;
+    height: 16px;
+}
+
 /*Responsive*/
 
 @media (max-width: 900px) {

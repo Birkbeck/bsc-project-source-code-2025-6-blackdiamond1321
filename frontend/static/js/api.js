@@ -47,7 +47,9 @@ const parseResponse = async (response) => {
 const apiJson = async (path, { method = 'GET', body } = {}) => {
     const response = await fetch(API_BASE + path, {
         method,
-        headers: buildHeaders({ 'Content-Type': 'application/json' }),
+        headers: buildHeaders({
+            'Content-Type': 'application/json'
+        }),
         body: body ? JSON.stringify(body) : null
     });
     return parseResponse(response);
@@ -66,12 +68,25 @@ const apiForm = async (path, fields) => {
 /* Public API */
 export const api = {
     /* Auth */
-    register: (data) => apiJson('/users/register', { method: 'POST', body: data }),
-    login: (email, password) => apiForm('/users/login', { username: email, password }),
+    register: (data) => apiJson('/users/register', {
+        method: 'POST',
+        body: data
+    }),
+    login: (email, password) => apiForm('/users/login', {
+        username: email, password
+    }),
     me: () => apiJson('/users/me'),
 
     /* Password reset */
-    forgotQuestion: (email) => apiJson('/users/forgot-question', { method: 'POST', body: { email } }),
-    resetPassword: (email, answer, new_password) => apiJson('/users/reset-password', { method: 'POST', body: { email, answer, new_password } }),
+    forgotQuestion: (email) => apiJson('/users/forgot-question', {
+        method: 'POST',
+        body: { email }
+    }),
+    resetPassword: (email, answer, new_password) => apiJson('/users/reset-password', {
+        method: 'POST',
+        body: { email, answer, new_password }
+    }),
+    /* Transactions */
+    getTransactions: () => apiJson('/transactions'),
     token
 };
