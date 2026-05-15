@@ -140,6 +140,19 @@ const openEdit = (id) => {
     document.getElementById('transaction_modal').hidden = false;
 };
 
+/* Delete transaction */
+const handleDelete = async (id) => {
+    const t = cachedTransactions.find(tx => tx.id === id);
+    if (!t) return;
+
+    /* Show the description of what user wants to delete*/
+    const ok = confirm(`Delete "${t.description}"? This cannot be undone.`);
+    if (!ok) return;
+
+    await api.deleteTransaction(id);
+    await loadTransactions();
+};
+
 const closeTransactionModal = () => {
     document.getElementById('transaction_form').reset();
     document.getElementById('transaction_error').hidden = true;
@@ -193,6 +206,7 @@ document.getElementById('transactions_body').addEventListener('click', (event) =
     const id = parseInt(button.dataset.id);
 
     if (action === 'edit') openEdit(id);
+    if (action === 'delete') handleDelete(id);
 
 });
 

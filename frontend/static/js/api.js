@@ -96,6 +96,7 @@ export const api = {
         method: 'PUT',
         body: data
     }),
+    deleteTransaction: (id) => apiJson(`/transactions/${id}`, { method: 'DELETE' }),
 
     /* Payment sources */
     getPaymentSources: () => apiJson('/payment-sources'),
