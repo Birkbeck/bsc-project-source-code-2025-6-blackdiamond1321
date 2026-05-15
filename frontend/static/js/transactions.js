@@ -76,6 +76,9 @@ const initModal = async () => {
     document.getElementById('transaction_modal').addEventListener('click', (event) => {
         if (event.target.id === 'transaction_modal') closeTransactionModal();
     });
+
+    /* Submit handler */
+    document.getElementById('transaction_form').addEventListener('submit', handleSubmit);
 };
 
 /* Load payment methods */
@@ -115,6 +118,23 @@ const closeTransactionModal = () => {
     document.getElementById('transaction_error').hidden = true;
     document.getElementById('transaction_edit_id').value = '';
     document.getElementById('transaction_modal').hidden = true;
+};
+
+/* Read form and update list */
+const handleSubmit = async (event) => {
+    event.preventDefault();
+    const data = Object.fromEntries(new FormData(event.target));
+    data.amount = parseFloat(data.amount);
+
+    try {
+        await api.createTransaction(data);
+        closeTransactionModal();
+        await loadTransactions();
+    } catch (err) {
+        const errorDiv = document.getElementById('transaction_error');
+        errorDiv.textContent = err.message;
+        errorDiv.hidden = false;
+    }
 };
 
 /* Connect Add Transaction button */

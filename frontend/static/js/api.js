@@ -88,6 +88,10 @@ export const api = {
     }),
     /* Transactions */
     getTransactions: () => apiJson('/transactions'),
+    createTransaction: (data) => apiJson('/transactions', {
+        method: 'POST',
+        body: data
+    }),
 
     /* Payment sources */
     getPaymentSources: () => apiJson('/payment-sources'),
