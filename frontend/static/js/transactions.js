@@ -24,8 +24,20 @@ const loadTransactions = async () => {
 const display = (transactions) => {
     const body = document.getElementById('transactions_body');
     const count = document.getElementById('transaction_count');
+    const table = document.getElementById('transaction_table');
+    const empty = document.getElementById('transaction_empty');
 
     count.textContent = `${transactions.length} ${transactions.length === 1 ? 'transaction' : 'transactions'}`;
+    /* When there are no transactions hide the table */
+    if (transactions.length === 0) {
+        table.hidden = true;
+        empty.hidden = false;
+        return;
+    }
+    
+    /* If transactions present show the table */
+    table.hidden = false;
+    empty.hidden = true;
 
     body.innerHTML = transactions.map(t => {
         const sign = t.type === 'income' ? '+' : '-';

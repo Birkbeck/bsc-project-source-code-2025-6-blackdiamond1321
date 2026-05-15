@@ -689,6 +689,7 @@ nav.scrolled {
     text-align: right;
     white-space: nowrap;
 }
+
 .transaction-action-btn {
     background: none;
     border: none;
@@ -700,6 +701,7 @@ nav.scrolled {
     transition: all 0.2s;
     line-height: 0;
 }
+
 .transaction-action-btn:hover {
     background: var(--card-hover);
     color: var(--text);
@@ -710,6 +712,32 @@ nav.scrolled {
 .transaction-action-btn svg {
     width: 16px;
     height: 16px;
+}
+
+/* Empty table */
+.empty-state {
+    padding: 60px 24px;
+    text-align: center;
+}
+
+.empty-state-icon {
+    width: 48px;
+    height: 48px;
+    margin: 0 auto 16px;
+    color: var(--muted);
+    display: block;
+}
+
+.empty-state h3 {
+    font-family: var(--heading);
+    font-size: 20px;
+    font-weight: 600;
+    margin-bottom: 8px;
+}
+
+.empty-state p {
+    color: var(--text2);
+    font-size: 14px;
 }
 
 /*Responsive*/
