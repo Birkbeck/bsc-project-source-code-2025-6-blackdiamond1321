@@ -23,6 +23,7 @@ class TransactionRepository(BaseRepository[Transaction]):
         return (
             self._db.query(Transaction)
             .filter(Transaction.user_id == user_id)
+            .order_by(Transaction.date.desc(), Transaction.id.asc())
             .all()
         )
 
