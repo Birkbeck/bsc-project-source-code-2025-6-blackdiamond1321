@@ -33,6 +33,42 @@
                 </div>
                 <button class="btn btn--primary" data-action="add-transaction">+ Add Transaction</button>
             </div>
+            <!-- Date -->
+            <div class="filters">
+                <label class="filter">
+                    <span class="filter-label">Month</span>
+                    <input type="month" name="month">
+                </label>
+                <!-- Type -->
+                <label class="filter">
+                    <span class="filter-label">Type</span>
+                    <div class="select-wrapper">
+                        <select name="type-filter">
+                            <option value="all">All</option>
+                            <option value="income">Income</option>
+                            <option value="expense">Expense</option>
+                        </select>
+                    </div>
+                </label>
+                <!-- Category -->
+                <label class="filter">
+                    <span class="filter-label">Category</span>
+                    <div class="select-wrapper">
+                        <select name="category-filter">
+                            <option value="all">All</option>
+                        </select>
+                    </div>
+                </label>
+                <!-- Payment method -->
+                <label class="filter">
+                    <span class="filter-label">Method</span>
+                    <div class="select-wrapper">
+                        <select name="method-filter">
+                            <option value="all">All</option>
+                        </select>
+                    </div>
+                </label>
+            </div>
 
             <div class="table-card">
                 <div class="table-header">

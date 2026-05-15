@@ -759,6 +759,56 @@ nav.scrolled {
     margin-top: 20px;
 }
 
+/* Filter */
+
+.filters {
+    display: flex;
+    gap: 16px;
+    margin-bottom: 24px;
+    flex-wrap: wrap;
+}
+
+.filter {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    flex: 1;
+    min-width: 160px;
+}
+
+.filter-label {
+    font-size: 11px;
+    color: var(--muted);
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.filter input,
+.filter select {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 10px 14px;
+    color: var(--text);
+    font-family: var(--body);
+    font-size: 14px;
+    color-scheme: dark;
+}
+
+.filter select {
+    width: 100%;
+    appearance: none;
+    padding-right: 36px;
+    cursor: pointer;
+}
+
+.filter input:focus,
+.filter select:focus {
+    outline: none;
+    border-color: var(--accent);
+}
+
 /*Responsive*/
 
 @media (max-width: 900px) {

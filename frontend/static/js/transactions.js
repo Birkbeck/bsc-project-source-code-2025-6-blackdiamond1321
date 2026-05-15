@@ -20,8 +20,17 @@ const TRASH_ICON = `
 
 /* Load all transactions and display them as a table */
 const loadTransactions = async () => {
-    const transactions = await api.getTransactions();
-    display(transactions);
+    cachedTransactions = await api.getTransactions();
+    buildCategoryFilter();
+    buildMethodFilter()
+
+    /* Display current month */
+    const monthInput = document.querySelector('[name="month"]');
+    if (!monthInput.value) {
+        monthInput.value = new Date().toISOString().slice(0, 7);
+    }
+
+    applyFilters();
 };
 
 const display = (transactions) => {
@@ -29,7 +38,7 @@ const display = (transactions) => {
     const count = document.getElementById('transaction_count');
     const table = document.getElementById('transaction_table');
     const empty = document.getElementById('transaction_empty');
-    cachedTransactions = transactions;
+
 
     count.textContent = `${transactions.length} ${transactions.length === 1 ? 'transaction' : 'transactions'}`;
     /* When there are no transactions hide the table */
@@ -208,6 +217,62 @@ document.getElementById('transactions_body').addEventListener('click', (event) =
     if (action === 'edit') openEdit(id);
     if (action === 'delete') handleDelete(id);
 
+});
+
+/* Read all filters controls display */
+const applyFilters = () => {
+    const month = document.querySelector('[name="month"]').value;
+    const type = document.querySelector('[name="type-filter"]').value;
+    const category = document.querySelector('[name="category-filter"]').value;
+    const method = document.querySelector('[name="method-filter"]').value;
+
+    let filtered = cachedTransactions;
+
+    /* Month filter. Write or chose month and year */
+    if (month) {
+        filtered = filtered.filter(t => t.date.startsWith(month));
+    }
+
+    if (type !== 'all') {
+        filtered = filtered.filter(t => t.type === type);
+    }
+
+    if (category !== 'all') {
+        filtered = filtered.filter(t => t.category === category);
+    }
+
+    if (method !== 'all') {
+        filtered = filtered.filter(t => t.method === method);
+    }
+
+    display(filtered);
+};
+
+/* Build the category dropdown from the categories used */
+const buildCategoryFilter = () => {
+    const select = document.querySelector('[name="category-filter"]');
+    const current = select.value || 'all';
+
+    /* Remove duplicates and sort it alphabetically */
+    const categories = [...new Set(cachedTransactions.map(t => t.category))].sort();
+
+    select.innerHTML = '<option value="all">All</option>' +
+        categories.map(c => `<option${c === current ? ' selected' : ''}>${c}</option>`).join('');
+};
+
+/* Build the method dropdown */
+const buildMethodFilter = () => {
+    const select = document.querySelector('[name="method-filter"]');
+    const current = select.value || 'all';
+
+    const methods = [...new Set(cachedTransactions.map(t => t.method))].sort();
+
+    select.innerHTML = '<option value="all">All</option>' +
+        methods.map(m => `<option${m === current ? ' selected' : ''}>${m}</option>`).join('');
+};
+
+['month', 'type-filter', 'category-filter', 'method-filter'].forEach(name => {
+    document.querySelector(`[name="${name}"]`).addEventListener('change', applyFilters);
 });
 
 loadTransactions();
