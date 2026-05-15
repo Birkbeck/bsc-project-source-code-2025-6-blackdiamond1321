@@ -92,6 +92,10 @@ export const api = {
         method: 'POST',
         body: data
     }),
+    updateTransaction: (id, data) => apiJson(`/transactions/${id}`, {
+        method: 'PUT',
+        body: data
+    }),
 
     /* Payment sources */
     getPaymentSources: () => apiJson('/payment-sources'),

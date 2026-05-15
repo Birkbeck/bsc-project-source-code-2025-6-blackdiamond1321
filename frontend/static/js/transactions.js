@@ -4,6 +4,9 @@ import { api } from './api.js';
 import { formatCurrency, formatDate } from './format.js';
 import { getCategoryColour, INCOME_CATEGORIES, EXPENSE_CATEGORIES } from './palette.js';
 
+/* Keep recent transaction list in memory for edit transaction */
+let cachedTransactions = [];
+
 /* SVG icons (https://heroicons.com/) for the Actions column */
 const PENCIL_ICON = `
 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
@@ -26,6 +29,7 @@ const display = (transactions) => {
     const count = document.getElementById('transaction_count');
     const table = document.getElementById('transaction_table');
     const empty = document.getElementById('transaction_empty');
+    cachedTransactions = transactions;
 
     count.textContent = `${transactions.length} ${transactions.length === 1 ? 'transaction' : 'transactions'}`;
     /* When there are no transactions hide the table */
@@ -113,11 +117,35 @@ const openTransactionModal = () => {
     document.getElementById('transaction_modal').hidden = false;
 };
 
+/* Edit transaction */
+const openEdit = (id) => {
+    const t = cachedTransactions.find(tx => tx.id === id);
+    if (!t) return;
+
+    /* Fill the form with transaction data */
+    document.getElementById('transaction_edit_id').value = t.id;
+    document.querySelector('select[name="type"]').value = t.type;
+    document.querySelector('input[name="description"]').value = t.description;
+    document.querySelector('input[name="amount"]').value = t.amount;
+    document.querySelector('input[name="date"]').value = t.date;
+
+    /* List categories */
+    loadCategories(t.type, t.category);
+
+    /* List methods */
+    document.querySelector('select[name="method"]').value = t.method;
+
+    /* Change the name to Edit Transaction */
+    document.getElementById('transaction_modal_title').textContent = 'Edit Transaction';
+    document.getElementById('transaction_modal').hidden = false;
+};
+
 const closeTransactionModal = () => {
     document.getElementById('transaction_form').reset();
     document.getElementById('transaction_error').hidden = true;
     document.getElementById('transaction_edit_id').value = '';
     document.getElementById('transaction_modal').hidden = true;
+    document.getElementById('transaction_modal_title').textContent = 'Add Transaction';
 };
 
 /* Read form and update list */
@@ -126,8 +154,14 @@ const handleSubmit = async (event) => {
     const data = Object.fromEntries(new FormData(event.target));
     data.amount = parseFloat(data.amount);
 
+    const editId = document.getElementById('transaction_edit_id').value;
+
     try {
-        await api.createTransaction(data);
+        if (editId) {
+            await api.updateTransaction(editId, data);
+        } else {
+            await api.createTransaction(data);
+        }
         closeTransactionModal();
         await loadTransactions();
     } catch (err) {
@@ -148,6 +182,18 @@ document.addEventListener('keydown', (event) => {
     if (event.key === 'Escape' && modal && !modal.hidden) {
         closeTransactionModal();
     }
+});
+
+/* Actions for pencil and trash buttons */
+document.getElementById('transactions_body').addEventListener('click', (event) => {
+    const button = event.target.closest('[data-action]');
+    if (!button) return;
+
+    const action = button.dataset.action;
+    const id = parseInt(button.dataset.id);
+
+    if (action === 'edit') openEdit(id);
+
 });
 
 loadTransactions();
