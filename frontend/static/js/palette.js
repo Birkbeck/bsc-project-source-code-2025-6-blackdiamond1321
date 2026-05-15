@@ -21,5 +21,26 @@ export const CATEGORY_COLOURS = {
     'other': '#93c5fd',
 };
 
+export const EXPENSE_CATEGORIES = [
+    'Groceries',
+    'Food & Dining',
+    'Transport',
+    'Bills',
+    'Leisure',
+    'Shopping',
+    'Health',
+    'Subscriptions',
+    'Bank Transfer',
+    'Other',
+];
+
+export const INCOME_CATEGORIES = [
+    'Salary',
+    'Freelance',
+    'Investment',
+    'Bank Transfer',
+    'Other',
+];
+
 export const getCategoryColour = (category) =>
     CATEGORY_COLOURS[category.toLowerCase()] ?? 'var(--muted)';

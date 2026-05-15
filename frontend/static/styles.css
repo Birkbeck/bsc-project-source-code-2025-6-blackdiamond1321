@@ -26,7 +26,10 @@
     box-sizing: border-box;
 }
 
-html { scroll-behavior: smooth; }
+html {
+    scroll-behavior: smooth;
+    color-scheme: dark;
+}
 
 body {
     font-family: var(--body);
@@ -597,6 +600,18 @@ nav.scrolled {
     margin-bottom: 32px;
 }
 
+.page-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 16px;
+    margin-bottom: 32px;
+}
+
+.page-header .dashboard-subtitle {
+    margin-bottom: 0;
+}
+
 /* Table card */
 
 .table-card {
@@ -738,6 +753,10 @@ nav.scrolled {
 .empty-state p {
     color: var(--text2);
     font-size: 14px;
+}
+
+.empty-state .btn {
+    margin-top: 20px;
 }
 
 /*Responsive*/

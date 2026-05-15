@@ -1,0 +1,58 @@
+<div class="modal-overlay" id="transaction_modal" hidden>
+    <div class="modal">
+        <button class="modal-close" id="transaction_close" aria-label="Close">&times;</button>
+        <h2 class="modal-title" id="transaction_modal_title">Add Transaction</h2>
+
+        <form id="transaction_form" class="modal-form">
+            <input type="hidden" id="transaction_edit_id">
+
+            <label class="field">
+                <span class="field-label">Type</span>
+                <div class="select-wrapper">
+                    <select name="type" required>
+                        <option value="expense">Expense</option>
+                        <option value="income">Income</option>
+                    </select>
+                </div>
+            </label>
+
+            <label class="field">
+                <span class="field-label">Description</span>
+                <input type="text" name="description" required maxlength="255" placeholder="e.g. Grocery shopping">
+            </label>
+
+            <div class="field-row">
+                <label class="field">
+                    <span class="field-label">Amount (£)</span>
+                    <input type="number" name="amount" required step="0.01" min="0.01" placeholder="e.g 12.98">
+                </label>
+                <label class="field">
+                    <span class="field-label">Date</span>
+                    <input type="date" name="date" required>
+                </label>
+            </div>
+
+            <label class="field">
+                <span class="field-label">Category</span>
+                <div class="select-wrapper">
+                    <select name="category" required>
+                        <option value="" disabled selected>Loading...</option>
+                    </select>
+                </div>
+            </label>
+
+            <label class="field">
+                <span class="field-label">Method</span>
+                <div class="select-wrapper">
+                    <select name="method" required>
+                        <option value="" disabled selected>Loading...</option>
+                    </select>
+                </div>
+            </label>
+
+            <div class="modal-error" id="transaction_error" hidden></div>
+
+            <button type="submit" class="btn btn--primary btn--full">Save</button>
+        </form>
+    </div>
+</div>

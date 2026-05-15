@@ -88,5 +88,8 @@ export const api = {
     }),
     /* Transactions */
     getTransactions: () => apiJson('/transactions'),
+
+    /* Payment sources */
+    getPaymentSources: () => apiJson('/payment-sources'),
     token
 };

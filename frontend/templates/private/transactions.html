@@ -26,8 +26,14 @@
     <!-- Nav and sidebar injected by shell.js -->
     <div class="dashboard-layout">
         <main class="dashboard-main">
-            <h1 class="dashboard-title">Transactions</h1>
-            <p class="dashboard-subtitle">Manage your income and expenses</p>
+            <div class="page-header">
+                <div>
+                    <h1 class="dashboard-title">Transactions</h1>
+                    <p class="dashboard-subtitle">Manage your income and expenses</p>
+                </div>
+                <button class="btn btn--primary" data-action="add-transaction">+ Add Transaction</button>
+            </div>
+
             <div class="table-card">
                 <div class="table-header">
                     <h3 class="table-title">All Transactions</h3>
@@ -56,6 +62,9 @@
                     <p>Add your first transaction</p>
                 </div>
             </div>
+
+            <!-- Modal root -->
+            <div id="modal-root"></div>
         </main>
     </div>
 </body>
