@@ -64,6 +64,11 @@ const display = (budgets, transactions) => {
         const barWidth = Math.min(100, percent);
         const colour = getCategoryColour(b.category);
 
+        /* Bar colour class based on %  */
+        const barClass = percent >= 90 ? 'budget-bar-fill--danger'
+              : percent >= 70 ? 'budget-bar-fill--warning'
+              : '';
+
         return `
             <div class="budget-card" data-category="${b.category}">
                 <div class="budget-header">
@@ -78,7 +83,7 @@ const display = (budgets, transactions) => {
                     <span class="budget-limit">/ ${formatCurrency(b.monthly_limit)}</span>
                 </div>
                 <div class="budget-bar">
-                    <div class="budget-bar-fill" style="width:${barWidth}%"></div>
+                    <div class="budget-bar-fill ${barClass}" style="width:${barWidth}%"></div>
                 </div>
                 <div class="budget-status">${Math.round(percent)}% used</div>
             </div>

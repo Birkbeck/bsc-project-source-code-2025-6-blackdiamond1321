@@ -869,6 +869,14 @@ nav.scrolled {
     transition: width 0.3s ease;
 }
 
+.budget-bar-fill--warning {
+    background: #facc15;
+}
+
+.budget-bar-fill--danger {
+    background: var(--red);
+}
+
 .budget-status {
     font-size: 13px;
     color: var(--text2);
