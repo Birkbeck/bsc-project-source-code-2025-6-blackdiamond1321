@@ -4,6 +4,9 @@ import { api } from './api.js';
 import { formatCurrency } from './format.js';
 import { getCategoryColour } from './palette.js';
 
+/* Keep recent budget list in memory for edit transaction */
+let cachedBudgets = [];
+
 /* SVG icons (https://heroicons.com/) for the Actions column */
 const PENCIL_ICON = `
 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
@@ -27,6 +30,8 @@ const loadBudgets = async () => {
 const display = (budgets, transactions) => {
     const grid = document.getElementById('budgets_grid');
     const empty = document.getElementById('budgets_empty');
+
+    cachedBudgets = budgets;
 
      /* When there are no budgets hide the table */
     if (budgets.length === 0) {
@@ -106,13 +111,45 @@ const closeBudgetModal = () => {
     document.getElementById('budget_modal').hidden = true;
 };
 
+/* Edit budget */
+const openEdit = (category) => {
+    const b = cachedBudgets.find(bg => bg.category === category);
+    if (!b) return;
+
+     /* Fill the form with budget data */
+    document.getElementById('budget_original_category').value = b.category;
+    document.querySelector('select[name="category"]').value = b.category;
+    document.querySelector('input[name="monthly_limit"]').value = b.monthly_limit;
+
+     /* Change the name to Edit Budget */
+    document.getElementById('budget_modal_title').textContent = 'Edit Budget';
+    document.getElementById('budget_modal').hidden = false;
+};
+
+/* Delete budget */
+const handleDelete = async (category) => {
+    const b = cachedBudgets.find(bg => bg.category === category);
+    if (!b) return;
+
+    const ok = confirm(`Delete the "${b.category}" budget?`);
+    if (!ok) return;
+
+    await api.deleteBudget(b.category);
+    await loadBudgets();
+};
+
 /* Read form and update list */
 const handleSubmit = async (event) => {
     event.preventDefault();
     const data = Object.fromEntries(new FormData(event.target));
     data.monthly_limit = parseFloat(data.monthly_limit);
 
+    const originalCategory = document.getElementById('budget_original_category').value;
+
     try {
+        if (originalCategory && originalCategory !== data.category) {
+            await api.deleteBudget(originalCategory);
+        }
         await api.createBudget(data);
         closeBudgetModal();
         await loadBudgets();
@@ -134,6 +171,18 @@ document.addEventListener('keydown', (event) => {
     if (event.key === 'Escape' && modal && !modal.hidden) {
         closeBudgetModal();
     }
+});
+
+/* Actions for pencil and trash buttons */
+document.getElementById('budgets_grid').addEventListener('click', (event) => {
+    const button = event.target.closest('[data-action]');
+    if (!button) return;
+
+    const action = button.dataset.action;
+    const category = button.dataset.category;
+
+    if (action === 'edit')   openEdit(category);
+    if (action === 'delete') handleDelete(category);
 });
 
 initModal();
