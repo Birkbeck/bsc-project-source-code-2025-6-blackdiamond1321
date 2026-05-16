@@ -1,0 +1,40 @@
+<div class="modal-overlay" id="budget_modal" hidden>
+    <div class="modal">
+        <button class="modal-close" id="budget_close" aria-label="Close">&times;</button>
+        <h2 class="modal-title" id="budget_modal_title">Add Budget</h2>
+
+        <form id="budget_form" class="modal-form">
+
+            <input type="hidden" id="budget_original_category">
+
+            <label class="field">
+                <span class="field-label">Category</span>
+                <div class="select-wrapper">
+                  <select name="category" required>
+                      <option value="" disabled selected>Choose a category</option>
+                      <option>Bills</option>
+                      <option>Food & Dining</option>
+                      <option>Groceries</option>
+                      <option>Health</option>
+                      <option>Leisure</option>
+                      <option>Other</option>
+                      <option>Shopping</option>
+                      <option>Subscriptions</option>
+                      <option>Total Spending</option>
+                      <option>Transport</option>
+                      <option>Bank Transfer</option>
+                    </select>
+                </div>
+            </label>
+
+            <label class="field">
+                <span class="field-label">Monthly limit (£)</span>
+                <input type="number" name="monthly_limit" required step="0.01" min="0.01" placeholder="0.00">
+            </label>
+
+            <div class="modal-error" id="budget_error" hidden></div>
+
+            <button type="submit" class="btn btn--primary btn--full">Save</button>
+        </form>
+    </div>
+</div>

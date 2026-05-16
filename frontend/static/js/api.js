@@ -103,5 +103,9 @@ export const api = {
 
     /* Budgets */
     getBudgets: () => apiJson('/budgets'),
+    createBudget: (data) => apiJson('/budgets', { method: 'POST',
+        body: data
+    }),
+    deleteBudget: (category) => apiJson(`/budgets/${encodeURIComponent(category)}`, { method: 'DELETE' }),
     token
 };

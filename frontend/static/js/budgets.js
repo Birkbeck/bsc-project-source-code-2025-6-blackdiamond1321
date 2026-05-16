@@ -81,4 +81,61 @@ const display = (budgets, transactions) => {
     }).join('');
 };
 
+/* Load the modal */
+const initModal = async () => {
+    const response = await fetch('/modals/budget');
+    const html = await response.text();
+    document.getElementById('modal-root').innerHTML = html;
+
+    document.getElementById('budget_close').addEventListener('click', closeBudgetModal);
+    document.getElementById('budget_modal').addEventListener('click', (event) => {
+        if (event.target.id === 'budget_modal') closeBudgetModal();
+    });
+    document.getElementById('budget_form').addEventListener('submit', handleSubmit);
+};
+
+const openBudgetModal = () => {
+    document.getElementById('budget_modal').hidden = false;
+};
+
+const closeBudgetModal = () => {
+    document.getElementById('budget_form').reset();
+    document.getElementById('budget_error').hidden = true;
+    document.getElementById('budget_original_category').value = '';
+    document.getElementById('budget_modal_title').textContent = 'Add Budget';
+    document.getElementById('budget_modal').hidden = true;
+};
+
+/* Read form and update list */
+const handleSubmit = async (event) => {
+    event.preventDefault();
+    const data = Object.fromEntries(new FormData(event.target));
+    data.monthly_limit = parseFloat(data.monthly_limit);
+
+    try {
+        await api.createBudget(data);
+        closeBudgetModal();
+        await loadBudgets();
+    } catch (err) {
+        const errorDiv = document.getElementById('budget_error');
+        errorDiv.textContent = err.message;
+        errorDiv.hidden = false;
+    }
+};
+
+/* Connect Add Budget button */
+document.querySelectorAll('[data-action="add-budget"]').forEach(btn => {
+    btn.addEventListener('click', openBudgetModal);
+});
+
+/* Escape key closes any open modal */
+document.addEventListener('keydown', (event) => {
+    const modal = document.getElementById('budget_modal');
+    if (event.key === 'Escape' && modal && !modal.hidden) {
+        closeBudgetModal();
+    }
+});
+
+initModal();
+
 loadBudgets();
