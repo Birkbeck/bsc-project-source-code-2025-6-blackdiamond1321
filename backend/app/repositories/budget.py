@@ -23,5 +23,6 @@ class BudgetRepository(BaseRepository[Budget]):
         return (
             self._db.query(Budget)
             .filter(Budget.user_id == user_id)
+            .order_by(Budget.id)
             .all()
         )

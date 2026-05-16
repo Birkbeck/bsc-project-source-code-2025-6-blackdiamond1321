@@ -19,6 +19,7 @@ export const CATEGORY_COLOURS = {
     'bank transfer': '#facc15',
     /* Other */
     'other': '#93c5fd',
+    'total spending':  '#10b981',
 };
 
 export const EXPENSE_CATEGORIES = [

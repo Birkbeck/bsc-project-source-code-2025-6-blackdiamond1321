@@ -26,17 +26,33 @@ const loadBudgets = async () => {
 
 const display = (budgets, transactions) => {
     const grid = document.getElementById('budgets_grid');
+    const empty = document.getElementById('budgets_empty');
+
+     /* When there are no budgets hide the table */
+    if (budgets.length === 0) {
+        grid.hidden = true;
+        empty.hidden = false;
+        return;
+    }
+
+    /* If present show the grid */
+    grid.hidden = false;
+    empty.hidden = true;
 
     /* Current month  */
     const currentMonth = new Date().toISOString().slice(0, 7);
 
     grid.innerHTML = budgets.map(b => {
         /* Sum expenses in this category */
-        const spent = transactions
-            .filter(t => t.category === b.category
-                       && t.date.startsWith(currentMonth)
-                       && t.type === 'expense')
-            .reduce((sum, t) => sum + t.amount, 0);
+        const spent = b.category === 'Total Spending'
+        ? transactions
+                .filter(t => t.date.startsWith(currentMonth) && t.type === 'expense')
+                .reduce((sum, t) => sum + t.amount, 0)
+        : transactions
+                .filter(t => t.category === b.category
+                    && t.date.startsWith(currentMonth)
+                    && t.type === 'expense')
+                .reduce((sum, t) => sum + t.amount, 0);
 
         /* Bar displaying limit. Max 100% */
         const percent = (spent / b.monthly_limit) * 100;
