@@ -809,6 +809,101 @@ nav.scrolled {
     border-color: var(--accent);
 }
 
+/* Budgets */
+
+.budgets-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 16px;
+}
+
+.budget-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 20px;
+}
+
+.budget-header {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 8px;
+}
+
+.budget-category {
+    font-weight: 600;
+    font-size: 14px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.budget-amounts {
+    font-size: 20px;
+    margin-bottom: 12px;
+    font-variant-numeric: tabular-nums;
+}
+
+.budget-amounts strong {
+    font-size: 24px;
+    font-weight: 700;
+    color: var(--text);
+}
+
+.budget-limit {
+    color: var(--text2);
+    font-size: 16px;
+    margin-left: 4px;
+}
+
+.budget-bar {
+    height: 8px;
+    background: rgba(255,255,255,0.06);
+    border-radius: 4px;
+    overflow: hidden;
+    margin-bottom: 8px;
+}
+
+.budget-bar-fill {
+    height: 100%;
+    background: var(--accent);
+    transition: width 0.3s ease;
+}
+
+.budget-status {
+    font-size: 13px;
+    color: var(--text2);
+}
+
+.budget-actions {
+    display: flex;
+    gap: 2px;
+}
+
+.budget-action-btn {
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: var(--text2);
+    padding: 6px;
+    border-radius: 6px;
+    transition: all 0.2s;
+    line-height: 0;
+}
+
+.budget-action-btn:hover {
+    background: var(--card-hover);
+    color: var(--text);
+}
+
+.budget-action-btn[data-action="delete"]:hover {
+    color: var(--red);
+}
+
+.budget-action-btn svg {
+    width: 16px;
+    height: 16px;
+}
+
 /*Responsive*/
 
 @media (max-width: 900px) {

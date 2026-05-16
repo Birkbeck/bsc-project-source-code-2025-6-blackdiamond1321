@@ -100,5 +100,8 @@ export const api = {
 
     /* Payment sources */
     getPaymentSources: () => apiJson('/payment-sources'),
+
+    /* Budgets */
+    getBudgets: () => apiJson('/budgets'),
     token
 };
