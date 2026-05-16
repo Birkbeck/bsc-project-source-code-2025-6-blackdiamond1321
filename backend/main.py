@@ -77,6 +77,11 @@ def budgets_page():
     """Budgets page"""
     return FileResponse(os.path.join(PRIVATE_PAGES, "budgets.html"))
 
+@app.get("/dashboard/loans")
+def loans_page():
+    """Loans page"""
+    return FileResponse(os.path.join(PRIVATE_PAGES, "loans.html"))
+
 @app.get("/health", summary="Health Check", description="Check if the API is running")
 def health():
     return {"status": "ok"}
