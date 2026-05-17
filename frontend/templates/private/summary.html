@@ -29,9 +29,19 @@
             <div class="page-header">
                 <div>
                     <h1 class="dashboard-title">Summary</h1>
-                    <p class="dashboard-subtitle">Monthly totals and category breakdowns</p>
+                    <p class="dashboard-subtitle">Financial breakdown by date range</p>
+                </div>
+                <div class="date-range">
+                    <span class="date-range-label">From</span>
+                    <input type="date" name="from">
+                    <span class="date-range-label">To</span>
+                    <input type="date" name="to">
+                    <button class="btn btn--ghost btn--small" id="this_month_btn">This Month</button>
                 </div>
             </div>
+
+            <div class="stat-cards" id="stat_cards"></div>
+
         </main>
     </div>
 </body>

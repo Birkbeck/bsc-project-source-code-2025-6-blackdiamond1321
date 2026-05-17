@@ -81,11 +81,12 @@ body {
     box-shadow: 0 8px 32px var(--glow);
 }
 .btn--ghost {
-    background: none;
+    background: var(--card);
     color: var(--text2);
     border: 1px solid rgba(255,255,255,0.12);
 }
 .btn--ghost:hover {
+    background: var(--card-hover);
     border-color: rgba(255,255,255,0.25);
     color: var(--text);
 }
@@ -1140,6 +1141,88 @@ nav.scrolled {
         padding: 20px;
     }
 }
+/* Summary */
+
+/* Date range picker */
+.date-range {
+    display: flex;
+    gap: 12px;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+.date-range label {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 11px;
+    color: var(--muted);
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.date-range input {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 8px 12px;
+    color: var(--text);
+    font-family: var(--body);
+    font-size: 14px;
+    color-scheme: dark;
+}
+
+/* Button */
+.btn--small {
+    padding: 8px 16px;
+    font-size: 13px;
+    border-radius: 8px;
+}
+
+/* Stat cards */
+.stat-cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 16px;
+    margin-bottom: 24px;
+}
+
+.stat-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 20px;
+}
+
+.stat-card-label {
+    font-size: 11px;
+    color: var(--muted);
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 8px;
+}
+
+.stat-card-value {
+    font-size: 28px;
+    font-weight: 700;
+    font-variant-numeric: tabular-nums;
+}
+
+.stat-card-value--income  {
+    color: var(--accent);
+}
+
+.stat-card-value--expense {
+    color: var(--red);
+}
+
+.stat-card-value--net {
+    color: var(--cyan);
+}
+
+/* Responsive */
 
 @media (max-width: 600px) {
     nav {
