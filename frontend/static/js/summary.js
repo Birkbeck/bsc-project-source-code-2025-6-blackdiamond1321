@@ -2,7 +2,7 @@
 
 import { api } from './api.js';
 import { formatCurrency } from './format.js';
-import { displayDonut } from './chart.js';
+import { displayDonut, displayBars } from './chart.js';
 
 let transactions = [];
 
@@ -74,6 +74,22 @@ const display = () => {
         document.getElementById('category_donut'),
         document.getElementById('donut_legend'),
         donutData,
+    );
+
+    /* Bars. Display by payments method */
+    const byMethod = {};
+    for (const t of filtered) {
+        if (!byMethod[t.method]) byMethod[t.method] = { income: 0, expense: 0 };
+        if (t.type === 'income') byMethod[t.method].income += t.amount;
+        else byMethod[t.method].expense += t.amount;
+    }
+    const methodData = Object.entries(byMethod).map(([label, { income, expense }]) => ({
+        label, income, expense,
+    }));
+
+    displayBars(
+        document.getElementById('method_bars'),
+        methodData,
     );
 };
 

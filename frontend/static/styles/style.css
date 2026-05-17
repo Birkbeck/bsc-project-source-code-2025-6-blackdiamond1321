@@ -1226,6 +1226,17 @@ nav.scrolled {
     margin-bottom: 18px;
 }
 
+.charts-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    margin-bottom: 16px;
+}
+
+.charts-row .chart-card {
+    margin-bottom: 0;
+}
+
 /* Donut layout */
 
 .donut-layout {
@@ -1249,7 +1260,7 @@ nav.scrolled {
 .donut::before {
     content: '';
     position: absolute;
-    inset: 30%;
+    inset: 25%;
     background: var(--bg);
     border-radius: 50%;
 }
@@ -1292,6 +1303,76 @@ nav.scrolled {
     font-variant-numeric: tabular-nums;
     min-width: 36px;
     text-align: right;
+}
+
+/* Method bar chart */
+
+/* Method rows */
+
+.method-bars {
+    display: flex;
+    flex-direction: column;
+}
+
+.method-row {
+    margin-bottom: 14px;
+}
+
+.method-row--total {
+    border-top: 1px solid var(--border);
+    padding-top: 14px;
+    margin-top: 6px;
+    font-weight: 700;
+}
+
+.method-row-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    margin-bottom: 6px;
+    font-size: 13px;
+}
+
+.method-row-name {
+    color: var(--text);
+    font-weight: 500;
+}
+
+.method-row-amounts {
+    font-variant-numeric: tabular-nums;
+}
+
+.method-row-income {
+    color: var(--accent);
+}
+
+.method-row-expense {
+    color: var(--red);
+}
+.method-row-sep {
+    color: var(--text2);
+    margin: 0 4px;
+}
+
+.method-row-bar {
+    display: flex;
+    height: 10px;
+    background: var(--card-hover);
+    border-radius: 5px;
+    overflow: hidden;
+}
+
+.method-row-fill {
+    height: 100%;
+    transition: width 0.3s ease;
+}
+
+.method-row-fill--income  {
+    background: var(--accent);
+}
+
+.method-row-fill--expense {
+    background: var(--red);
 }
 
 
@@ -1337,5 +1418,11 @@ nav.scrolled {
     .dashboard-main {
         margin-left: 0;
         padding: 20px;
+    }
+}
+
+@media (max-width: 1100px) {
+    .charts-row {
+        grid-template-columns: 1fr;
     }
 }
