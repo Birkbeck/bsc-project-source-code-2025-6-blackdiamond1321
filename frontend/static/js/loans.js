@@ -102,6 +102,8 @@ const showDetail = async (name) => {
     document.getElementById('view-root').innerHTML = detailHtml;
     document.getElementById('detail_name').textContent = name;
     document.getElementById('back_btn').addEventListener('click', showList);
+    document.getElementById('add_payment_btn').addEventListener('click', openPaymentModal);
+    document.getElementById('delete_loan_btn').addEventListener('click', handleDeleteLoan);
     await loadDetail();
 };
 
@@ -128,6 +130,10 @@ const loadDetail = async () => {
             </tr>
         `;
     }).join('');
+
+    /* Action buttons need a selected loan */
+    document.getElementById('add_payment_btn').disabled = !selectedLoanId;
+    document.getElementById('delete_loan_btn').disabled = !selectedLoanId;
 
     /* Payment history for selected loan */
     const paymentsBody  = document.getElementById('payments_body');
@@ -165,14 +171,28 @@ const loadDetail = async () => {
 /* Load the modal */
 
 const initModal = async () => {
-    const html = await fetch('/modals/loan').then(r => r.text());
-    document.getElementById('modal-root').innerHTML = html;
+    const [loanHtml, paymentHtml] = await Promise.all([
+        fetch('/modals/loan').then(r => r.text()),
+        fetch('/modals/payment').then(r => r.text()),
+    ]);
 
+    document.getElementById('modal-root').innerHTML = loanHtml + paymentHtml;
+
+    /* Loan modal */
     document.getElementById('loan_close').addEventListener('click', closeLoanModal);
     document.getElementById('loan_modal').addEventListener('click', e => {
         if (e.target.id === 'loan_modal') closeLoanModal();
     });
+
     document.getElementById('loan_form').addEventListener('submit', handleLoanSubmit);
+
+    /* Payment modal */
+    document.getElementById('payment_close').addEventListener('click', closePaymentModal);
+    document.getElementById('payment_modal').addEventListener('click', e => {
+        if (e.target.id === 'payment_modal') closePaymentModal();
+    });
+
+    document.getElementById('payment_form').addEventListener('submit', handlePaymentSubmit);
 };
 
 const openLoanModal = () => {
@@ -203,6 +223,62 @@ const handleLoanSubmit = async (event) => {
     }
 };
 
+/* Payment modal */
+
+const openPaymentModal = () => {
+    if (!selectedLoanId) return;
+    const loan = cachedLoans.find(l => l.id === selectedLoanId);
+
+    document.getElementById('payment_subtitle').textContent =
+        `Against loan to ${loan.borrower}`;
+    document.querySelector('#payment_form [name="currency"]').value = loan.currency;
+    document.querySelector('#payment_form [name="paid_at"]').value = new Date().toISOString().slice(0, 10);
+    document.getElementById('payment_modal').hidden = false;
+};
+
+const closePaymentModal = () => {
+    document.getElementById('payment_form').reset();
+    document.getElementById('payment_error').hidden = true;
+    document.getElementById('payment_modal').hidden = true;
+};
+
+const handlePaymentSubmit = async (event) => {
+    event.preventDefault();
+    const data = Object.fromEntries(new FormData(event.target));
+    data.amount = parseFloat(data.amount);
+    data.exchange_rate = parseFloat(data.exchange_rate) || 1.0;
+
+    try {
+        await api.createPayment(selectedLoanId, data);
+        closePaymentModal();
+        await loadDetail();
+    } catch (err) {
+        const errorDiv = document.getElementById('payment_error');
+        errorDiv.textContent = err.message;
+        errorDiv.hidden = false;
+    }
+};
+
+/* Delete loan */
+
+const handleDeleteLoan = async () => {
+    if (!selectedLoanId) return;
+    const loan = cachedLoans.find(l => l.id === selectedLoanId);
+    const ok = confirm(`Delete the loan to ${loan.borrower}? This will also delete all its payments.`);
+    if (!ok) return;
+
+    await api.deleteLoan(selectedLoanId);
+    selectedLoanId = null;
+
+    /* If this was the borrower's last loan, go back to the list */
+    const remaining = (await api.getLoans()).filter(l => l.borrower === currentBorrower);
+    if (remaining.length === 0) {
+        await showList();
+    } else {
+        await loadDetail();
+    }
+};
+
 /* Row clicks */
 document.getElementById('view-root').addEventListener('click', (event) => {
     const borrowerRow = event.target.closest('[data-borrower]');
@@ -219,8 +295,11 @@ document.getElementById('view-root').addEventListener('click', (event) => {
 });
 
 document.addEventListener('keydown', (event) => {
-    const modal = document.getElementById('loan_modal');
-    if (event.key === 'Escape' && modal && !modal.hidden) closeLoanModal();
+    if (event.key !== 'Escape') return;
+    const lm = document.getElementById('loan_modal');
+    const pm = document.getElementById('payment_modal');
+    if (lm && !lm.hidden) closeLoanModal();
+    if (pm && !pm.hidden) closePaymentModal();
 });
 
 (async () => {

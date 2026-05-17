@@ -113,6 +113,12 @@ export const api = {
         method: 'POST',
         body: data
     }),
+    /* Payments in loan */
     getPayments: (loanId) => apiJson(`/loans/${loanId}/payments`),
+    createPayment: (loanId, data)  => apiJson(`/loans/${loanId}/payments`, {
+        method: 'POST',
+        body: data
+    }),
+    deleteLoan: (id) => apiJson(`/loans/${id}`, { method: 'DELETE' }),
     token
 };

@@ -1,5 +1,9 @@
 <div class="page-header">
     <button class="btn btn--ghost" id="back_btn">Back</button>
+    <div class="detail-actions">
+        <button class="btn btn--primary" id="add_payment_btn" disabled>Add Payment</button>
+        <button class="btn btn--danger" id="delete_loan_btn" disabled>Delete loan</button>
+    </div>
 </div>
 <h1 class="dashboard-title" id="detail_name">—</h1>
 <p class="dashboard-subtitle">Loan details</p>
@@ -44,6 +48,6 @@
     </table>
     <div class="empty-state" id="payments_empty">
         <h3>No payments yet</h3>
-        <p>Select or create a loan to see its payment history</p>
+        <p>Select a loan above to see its payment history</p>
     </div>
 </div>

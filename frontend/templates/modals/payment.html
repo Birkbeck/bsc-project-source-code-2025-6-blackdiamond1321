@@ -1,0 +1,41 @@
+<div class="modal-overlay" id="payment_modal" hidden>
+    <div class="modal">
+        <button class="modal-close" id="payment_close" aria-label="Close">&times;</button>
+        <h2 class="modal-title">Add Payment</h2>
+        <p class="modal-subtitle" id="payment_subtitle">Against loan</p>
+
+        <form id="payment_form" class="modal-form">
+            <div class="field-row">
+                <label class="field">
+                    <span class="field-label">Amount</span>
+                    <input type="number" name="amount" required step="0.01" min="0.01">
+                </label>
+                <label class="field">
+                    <span class="field-label">Currency</span>
+                    <div class="select-wrapper">
+                        <select name="currency" required>
+                            <option value="GBP">GBP £</option>
+                            <option value="USD">USD $</option>
+                            <option value="EUR">EUR €</option>
+                        </select>
+                    </div>
+                </label>
+            </div>
+
+            <div class="field-row">
+                <label class="field">
+                    <span class="field-label">Exchange rate</span>
+                    <input type="number" name="exchange_rate" step="0.0001" min="0.0001" value="1">
+                </label>
+                <label class="field">
+                    <span class="field-label">Date paid</span>
+                    <input type="date" name="paid_at" required>
+                </label>
+            </div>
+
+            <div class="modal-error" id="payment_error" hidden></div>
+
+            <button type="submit" class="btn btn--primary btn--full">Record Payment</button>
+        </form>
+    </div>
+</div>

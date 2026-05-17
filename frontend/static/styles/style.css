@@ -975,6 +975,23 @@ nav.scrolled {
     background: var(--card);
 }
 
+/* Buttons */
+
+.detail-actions {
+    display: flex;
+    gap: 12px;
+}
+
+.btn:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+    transform: none !important;
+    box-shadow: none !important;
+}
+.btn:disabled:hover {
+    transform: none !important;
+}
+
 /*Responsive*/
 
 @media (max-width: 900px) {
