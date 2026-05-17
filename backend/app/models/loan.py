@@ -1,7 +1,7 @@
 """Loan ORM model"""
 
 from sqlalchemy import Boolean, Float, ForeignKey, Integer, String
-from sqlalchemy.orm import Mapped, mapped_column
+from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from app.database import Base
 
@@ -20,4 +20,7 @@ class Loan(Base):
     borrowed_at: Mapped[str] = mapped_column(String(10), nullable=False) # YYYY-MM-DD
     paid_at: Mapped[str] = mapped_column(String(10), default="") # blank until fully repaid
     is_paid: Mapped[bool] = mapped_column(Boolean, default=False)
-    amount_paid: Mapped[float] = mapped_column(Float, default=0)  # in loan currency
+    amount_paid: Mapped[float] = mapped_column(Float, default=0) # in loan currency
+
+    # Delete payments if loan is deleted
+    payments = relationship("Payment", cascade="all, delete-orphan")
