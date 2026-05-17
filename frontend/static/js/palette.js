@@ -45,3 +45,13 @@ export const INCOME_CATEGORIES = [
 
 export const getCategoryColour = (category) =>
     CATEGORY_COLOURS[category.toLowerCase()] ?? 'var(--muted)';
+
+ /* Colours for borrower rings */
+export const RING_COLOURS = [
+    '#10b981',  // emerald
+    '#8b5cf6',  // violet
+    '#f97316',  // orange
+    '#3b82f6',  // blue
+    '#ef4444',  // red
+    '#a78bfa',  // light purple
+];

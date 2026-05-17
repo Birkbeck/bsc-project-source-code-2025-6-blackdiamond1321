@@ -2,6 +2,7 @@
 
 import { api } from './api.js';
 import { formatCurrency, formatDate } from './format.js';
+import { RING_COLOURS } from './palette.js';
 
 /* Keep recent loans list in memory for editing */
 let cachedLoans = [];
@@ -84,6 +85,8 @@ const loadList = async () => {
             </tr>
         `;
     }).join('');
+
+    displayRings(rows);
 };
 
 /* Coloured status badge */
@@ -130,6 +133,8 @@ const loadDetail = async () => {
             </tr>
         `;
     }).join('');
+
+    displayBar(loans);
 
     /* Action buttons need a selected loan */
     document.getElementById('add_payment_btn').disabled = !selectedLoanId;
@@ -277,6 +282,71 @@ const handleDeleteLoan = async () => {
     } else {
         await loadDetail();
     }
+};
+
+/* Display 1 ring per borrower */
+const displayRings = (rows) => {
+    const card = document.getElementById('ring_card');
+    if (rows.length === 0) {
+        card.hidden = true;
+        return;
+    }
+    card.hidden = false;
+
+    /* Sum due and paid per borrower */
+    const byName = {};
+    for (const r of rows) {
+        if (!byName[r.name]) byName[r.name] = { due: 0, paid: 0, currency: r.currency };
+        byName[r.name].due  += r.due;
+        byName[r.name].paid += r.paid;
+    }
+
+    document.getElementById('ring_grid').innerHTML = Object.entries(byName).map(([name, d], i) => {
+        const pct = d.due > 0 ? Math.min(d.paid / d.due * 100, 100) : 0;
+        const colour = RING_COLOURS[i % RING_COLOURS.length];
+        return `
+            <div class="ring-cell">
+                <div class="ring" style="--pct:${pct}; --colour:${colour}">
+                    <div class="ring-pct" style="color:${colour}">${Math.round(pct)}%</div>
+                </div>
+                <div class="ring-name">${name}</div>
+                <div class="ring-amounts">${formatCurrency(d.paid, d.currency)} / ${formatCurrency(d.due, d.currency)}</div>
+            </div>
+        `;
+    }).join('');
+};
+
+/* Display a horizontal bar per loan in the detail view */
+const displayBar = (loans) => {
+    const card = document.getElementById('bars_card');
+    if (loans.length === 0) {
+        card.hidden = true;
+        return;
+    }
+    card.hidden = false;
+
+    document.getElementById('bars').innerHTML = loans.map(l => {
+        const due = l.principal * (1 + l.interest_rate / 100);
+        const pct = due > 0 ? Math.min(l.amount_paid / due * 100, 100) : 0;
+        const remaining = Math.max(due - l.amount_paid, 0);
+        /* Colour shifts based on progress */
+        const colour = pct >= 100 ? 'var(--accent)'
+                     : pct >=  50 ? 'var(--cyan)'
+                     : pct >=  25 ? '#f97316'
+                     : 'var(--red)';
+        return `
+            <div class="loan-bar">
+                <div class="loan-bar-head">${formatCurrency(l.amount_paid, l.currency)} / ${formatCurrency(due, l.currency)}</div>
+                <div class="loan-bar-track">
+                    <div class="loan-bar-fill" style="width:${pct}%; background:${colour}"></div>
+                    <span class="loan-bar-pct">${pct.toFixed(0)}%</span>
+                </div>
+                <div class="loan-bar-caption">
+                    ${pct >= 100 ? '✓ Fully paid' : 'Remaining: ' + formatCurrency(remaining, l.currency)}
+                </div>
+            </div>
+        `;
+    }).join('');
 };
 
 /* Row clicks */

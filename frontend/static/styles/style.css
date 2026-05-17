@@ -12,8 +12,16 @@
     --glow: rgba(16,185,129,0.3);
     --cyan: #06b6d4;
     --red: #ef4444;
+    --yellow: #ffcc15;
+    --orange: #f97316;
+    --accent-tint: rgba(16, 185, 129, 0.1);
+    --yellow-tint: rgba(245, 158, 11, 0.1);
+    --red-tint:    rgba(239, 68, 68, 0.1);
+    --pct: 0;
+    --colour: var(--accent);
     --border: rgba(255,255,255,0.06);
     --border2: rgba(255,255,255,0.1);
+    --row-hover: rgba(255,255,255,0.02);
     --heading: 'Playfair Display', Georgia, serif;
     --body: 'DM Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Segoe UI Variable', Roboto, Ubuntu, sans-serif;
 }
@@ -621,6 +629,10 @@ nav.scrolled {
     overflow: hidden;
 }
 
+.table-card + .table-card {
+    margin-top: 16px;
+}
+
 .table-header {
     display: flex;
     justify-content: space-between;
@@ -857,7 +869,7 @@ nav.scrolled {
 
 .budget-bar {
     height: 8px;
-    background: rgba(255,255,255,0.06);
+    background: var(--card-hover);
     border-radius: 4px;
     overflow: hidden;
     margin-bottom: 8px;
@@ -870,7 +882,7 @@ nav.scrolled {
 }
 
 .budget-bar-fill--warning {
-    background: #facc15;
+    background: var(--yellow);
 }
 
 .budget-bar-fill--danger {
@@ -926,15 +938,15 @@ nav.scrolled {
     border-radius: 20px;
 }
 .badge--paid    {
-    background: rgba(16, 185, 129, 0.1);
+    background: var(--accent-tint);
     color: var(--accent);
 }
 .badge--partial {
-    background: rgba(245, 158, 11, 0.1);
-    color: #facc15;
+    background: var(--yellow-tint);
+    color: var(--yellow);
 }
 .badge--unpaid  {
-    background: rgba(239, 68, 68, 0.1);
+    background: var(--red-tint);
     color: var(--red);
 }
 
@@ -965,7 +977,7 @@ nav.scrolled {
     border-bottom: none;
 }
 .loan-table tbody tr:hover {
-    background: rgba(255,255,255,0.02);
+    background: var(--row-hover);
 }
 
 .loan-row {
@@ -990,6 +1002,122 @@ nav.scrolled {
 }
 .btn:disabled:hover {
     transform: none !important;
+}
+
+/* Ring card wrapper */
+.ring-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 20px 24px;
+    margin-bottom: 16px;
+}
+.ring-card-header h3 {
+    font-family: var(--heading);
+    font-size: 18px;
+    font-weight: 600;
+    margin-bottom: 4px;
+}
+.ring-card-header p {
+    font-size: 12px;
+    color: var(--text2);
+    margin-bottom: 18px;
+}
+
+/* Ring grid */
+
+.ring-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+    gap: 20px;
+}
+
+.ring-cell {
+    text-align: center;
+}
+
+/* Ring */
+.ring {
+    position: relative;
+    width: 140px;
+    height: 140px;
+    border-radius: 50%;
+    margin: 0 auto 8px;
+    background: conic-gradient(
+        var(--colour) calc(var(--pct) * 1%),
+        var(--bg2) 0
+    );
+}
+
+/* Inner circle to hide the ring hole */
+.ring::before {
+    content: '';
+    position: absolute;
+    inset: 12px;
+    background: var(--bg);
+    border-radius: 50%;
+}
+
+.ring-pct {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 22px;
+    font-weight: 700;
+    font-variant-numeric: tabular-nums;
+}
+
+.ring-name {
+    font-weight: 600;
+    color: var(--text);
+}
+
+.ring-amounts {
+    font-size: 12px;
+    color: var(--text2);
+    font-variant-numeric: tabular-nums;
+}
+
+/* Bar diagram */
+.loan-bars {
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+}
+.loan-bar-head {
+    font-weight: 600;
+    margin-bottom: 6px;
+    font-variant-numeric: tabular-nums;
+}
+.loan-bar-track {
+    position: relative;
+    height: 28px;
+    background: var(--card-hover);
+    border-radius: 14px;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+}
+.loan-bar-fill {
+    height: 100%;
+    transition: width 0.3s ease;
+    border-radius: 14px;
+}
+.loan-bar-pct {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--text);
+    text-shadow: 0 0 8px rgba(0,0,0,0.4);
+}
+.loan-bar-caption {
+    margin-top: 6px;
+    font-size: 12px;
+    color: var(--text2);
 }
 
 /*Responsive*/
