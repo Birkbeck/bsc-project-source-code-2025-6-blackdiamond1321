@@ -48,10 +48,14 @@ export const getCategoryColour = (category) =>
 
  /* Colours for borrower rings */
 export const RING_COLOURS = [
-    '#10b981',  // emerald
-    '#8b5cf6',  // violet
-    '#f97316',  // orange
-    '#3b82f6',  // blue
-    '#ef4444',  // red
-    '#a78bfa',  // light purple
+    '#10b981', // emerald
+    '#8b5cf6', // violet
+    '#f97316', // orange
+    '#3b82f6', // blue
+    '#ef4444', // red
+    '#facc15', // yellow
+    '#06b6d4', // cyan
+    '#ec4899', // pink
+    '#34d399', // teal
+    '#c867fa', // light purple
 ];

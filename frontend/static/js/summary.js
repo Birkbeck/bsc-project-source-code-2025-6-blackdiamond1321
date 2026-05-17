@@ -2,6 +2,7 @@
 
 import { api } from './api.js';
 import { formatCurrency } from './format.js';
+import { displayDonut } from './chart.js';
 
 let transactions = [];
 
@@ -59,6 +60,21 @@ const display = () => {
             <div class="stat-card-value">${count}</div>
         </div>
     `;
+
+    /* Donut chart. Group expenses by category */
+
+    const byCategory = {};
+    for (const t of filtered) {
+        if (t.type !== 'expense') continue;
+        byCategory[t.category] = (byCategory[t.category] || 0) + t.amount;
+    }
+    const donutData = Object.entries(byCategory).map(([label, value]) => ({ label, value }));
+
+    displayDonut(
+        document.getElementById('category_donut'),
+        document.getElementById('donut_legend'),
+        donutData,
+    );
 };
 
 /* Connect date inputs */
