@@ -2,7 +2,7 @@
 
 import { api } from './api.js';
 import { formatCurrency } from './format.js';
-import { displayDonut, displayBars } from './chart.js';
+import { displayDonut, displayBars, displayLine } from './chart.js';
 
 let transactions = [];
 
@@ -28,7 +28,7 @@ const setThisMonth = () => {
 /* Filter transactions and display stat cards */
 const display = () => {
     const from = document.querySelector('[name="from"]').value;
-    const to   = document.querySelector('[name="to"]').value;
+    const to = document.querySelector('[name="to"]').value;
     if (!from || !to) return;
 
     /* Date */
@@ -68,7 +68,7 @@ const display = () => {
         if (t.type !== 'expense') continue;
         byCategory[t.category] = (byCategory[t.category] || 0) + t.amount;
     }
-    const donutData = Object.entries(byCategory).map(([label, value]) => ({ label, value }));
+    const donutData = Object.entries(byCategory).map(([label, value]) => ({label, value}));
 
     displayDonut(
         document.getElementById('category_donut'),
@@ -79,11 +79,11 @@ const display = () => {
     /* Bars. Display by payments method */
     const byMethod = {};
     for (const t of filtered) {
-        if (!byMethod[t.method]) byMethod[t.method] = { income: 0, expense: 0 };
+        if (!byMethod[t.method]) byMethod[t.method] = {income: 0, expense: 0};
         if (t.type === 'income') byMethod[t.method].income += t.amount;
         else byMethod[t.method].expense += t.amount;
     }
-    const methodData = Object.entries(byMethod).map(([label, { income, expense }]) => ({
+    const methodData = Object.entries(byMethod).map(([label, {income, expense}]) => ({
         label, income, expense,
     }));
 
@@ -91,6 +91,25 @@ const display = () => {
         document.getElementById('method_bars'),
         methodData,
     );
+
+    /* Line chart. Daily spending across the selected range */
+
+    const totals = {};
+    for (const t of filtered) {
+        if (t.type === 'expense') totals[t.date] = (totals[t.date] || 0) + t.amount;
+    }
+
+    /* Take a start and last date from range in Filter transactions */
+    const dailyData = [];
+    const day = new Date(from + 'T00:00:00');
+    const end = new Date(to   + 'T00:00:00');
+    while (day <= end) {
+        const ds = day.toLocaleDateString('en-CA'); // ISO standard
+        dailyData.push({ label: ds, value: totals[ds] || 0 });
+        day.setDate(day.getDate() + 1);
+    }
+
+displayLine(document.getElementById('daily_line'), dailyData);
 };
 
 /* Connect date inputs */

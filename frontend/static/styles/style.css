@@ -1375,6 +1375,12 @@ nav.scrolled {
     background: var(--red);
 }
 
+/* Daily spending line chart */
+
+.line-wrap {
+    height: 260px;
+    width: 100%;
+}
 
 /* Responsive */
 

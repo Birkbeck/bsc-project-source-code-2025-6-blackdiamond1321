@@ -2,6 +2,8 @@
 
 import { RING_COLOURS } from './palette.js';
 import { formatCurrency } from './format.js';
+// import Chart.js. The library to draw the spending line
+import Chart from 'https://cdn.jsdelivr.net/npm/chart.js@4.4.1/auto/+esm';
 
 /* Display a donut chart */
 export const displayDonut = (target, legendTarget, data) => {
@@ -86,4 +88,65 @@ export const displayBars = (target, data) => {
             </div>
         </div>
     `).join('');
+};
+
+/* Daily spending line */
+/* Draws a red line showing how much was spent each day. */
+let lineChart;
+export const displayLine = (target, data) => {
+    /* If no data display message */
+    if (!data.length || data.every(d => d.value === 0)) {
+        target.innerHTML = '<p style="color:var(--text2)">No spending in this range</p>';
+        return;
+    }
+
+    /*Check if canvas inside the target  */
+    if (!target.querySelector('canvas')) target.innerHTML = '<canvas></canvas>';
+    const canvas = target.querySelector('canvas');
+
+    /* Clear previous chart */
+    if (lineChart) lineChart.destroy();
+
+    /* Change date format */
+    const labels = data.map(d => +d.label.slice(8) + '/' + +d.label.slice(5, 7));
+    const values = data.map(d => d.value);
+
+    lineChart = new Chart(canvas, {
+        type: 'line',
+        data: {
+            labels,
+            datasets: [{
+                data: values,
+                borderColor: '#ef4444',
+                backgroundColor: 'rgba(239,68,68,0.1)',
+                fill: true,
+                tension: 0.3,
+                pointRadius: data.length > 60 ? 0 : 2,
+            }],
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: { legend: { display: false } },
+            scales: {
+                x: {
+                    ticks: {
+                        color: '#64748b',
+                        maxTicksLimit: 12
+                    },
+                    grid:  {
+                        color: 'rgba(255,255,255,0.04)'
+                    },
+                },
+                y: {
+                    ticks: {
+                        color: '#64748b', callback: v => '£' + v
+                    },
+                    grid:  {
+                        color: 'rgba(255,255,255,0.04)'
+                    },
+                },
+            },
+        },
+    });
 };
