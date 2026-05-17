@@ -92,6 +92,11 @@ def view(name: str):
         return JSONResponse(status_code=404, content={"detail": "View not found"})
     return FileResponse(path)
 
+@app.get("/dashboard/summary")
+def summary_page():
+    """Summary page"""
+    return FileResponse(os.path.join(PRIVATE_PAGES, "summary.html"))
+
 @app.get("/health", summary="Health Check", description="Check if the API is running")
 def health():
     return {"status": "ok"}
