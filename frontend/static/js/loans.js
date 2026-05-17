@@ -1,12 +1,37 @@
 /* FinTrack loans */
 
 import { api } from './api.js';
-import { formatCurrency } from './format.js';
+import { formatCurrency, formatDate } from './format.js';
 
 /* Keep recent loans list in memory for editing */
 let cachedLoans = [];
+let currentBorrower = '';
+let selectedLoanId = null;
 
-/* Load all loans and display them as a table */
+/* Keep views in memory */
+let listHtml = '';
+let detailHtml = '';
+
+const loadViews = async () => {
+    listHtml = await fetch('/views/loans-list').then(r => r.text());
+    detailHtml = await fetch('/views/loans-detail').then(r => r.text());
+};
+
+/* Show the list view */
+const showList = async () => {
+    currentBorrower = '';
+    selectedLoanId = null;
+    document.getElementById('view-root').innerHTML = listHtml;
+
+    /* Connect Add Loan button */
+    document.querySelectorAll('[data-action="add-loan"]').forEach(btn => {
+        btn.addEventListener('click', openLoanModal);
+    });
+
+    await loadList();
+};
+
+/* List view */
 const loadList = async () => {
     cachedLoans = await api.getLoans();
 
@@ -48,7 +73,7 @@ const loadList = async () => {
                      : r.paid >= r.due ? 'PAID'
                      : 'PARTIAL';
         return `
-            <tr data-borrower="${r.name}" style="cursor:pointer">
+            <tr data-borrower="${r.name}" class="loan-row">
                 <td><strong>${r.name}</strong></td>
                 <td>${r.count}</td>
                 <td>${formatCurrency(r.principal, r.currency)}</td>
@@ -67,6 +92,74 @@ const badge = (status) => {
               : status === 'PARTIAL' ? 'badge--partial'
               : 'badge--unpaid';
     return `<span class="badge ${cls}">${status}</span>`;
+};
+
+/* Detail view */
+
+const showDetail = async (name) => {
+    currentBorrower = name;
+    selectedLoanId = null;
+    document.getElementById('view-root').innerHTML = detailHtml;
+    document.getElementById('detail_name').textContent = name;
+    document.getElementById('back_btn').addEventListener('click', showList);
+    await loadDetail();
+};
+
+const loadDetail = async () => {
+    cachedLoans = await api.getLoans();
+    const loans = cachedLoans.filter(l => l.borrower === currentBorrower);
+
+    document.getElementById('detail_body').innerHTML = loans.map(l => {
+        const due = l.principal * (1 + l.interest_rate / 100);
+        const remaining = Math.max(due - l.amount_paid, 0);
+        const status = l.is_paid ? 'PAID' : l.amount_paid > 0 ? 'PARTIAL' : 'UNPAID';
+        const selected = selectedLoanId === l.id;
+        return `
+            <tr data-loan-id="${l.id}" class="loan-row ${selected ? 'loan-row--selected' : ''}">
+                <td><input type="radio" name="loan-select" ${selected ? 'checked' : ''} style="pointer-events:none"></td>
+                <td><strong>${formatCurrency(l.principal, l.currency)}</strong></td>
+                <td>${l.interest_rate}%</td>
+                <td>${l.currency}</td>
+                <td><strong>${formatCurrency(due, l.currency)}</strong></td>
+                <td style="color:var(--accent)">${formatCurrency(l.amount_paid, l.currency)}</td>
+                <td style="color:var(--red)">${formatCurrency(remaining, l.currency)}</td>
+                <td style="font-size:13px">${formatDate(l.borrowed_at)}</td>
+                <td>${badge(status)}</td>
+            </tr>
+        `;
+    }).join('');
+
+    /* Payment history for selected loan */
+    const paymentsBody  = document.getElementById('payments_body');
+    const paymentsEmpty = document.getElementById('payments_empty');
+
+    if (!selectedLoanId) {
+        paymentsBody.innerHTML = '';
+        paymentsEmpty.hidden = false;
+        return;
+    }
+
+    const payments = await api.getPayments(selectedLoanId);
+    if (payments.length === 0) {
+        paymentsBody.innerHTML = '';
+        paymentsEmpty.hidden = false;
+        return;
+    }
+
+    paymentsEmpty.hidden = true;
+    paymentsBody.innerHTML = payments.map(p => {
+        const cross = p.currency !== p.loan_currency;
+        const converted = p.amount * p.exchange_rate;
+        return `
+            <tr>
+                <td><strong>${formatCurrency(p.amount, p.currency)}</strong></td>
+                <td>${p.currency}</td>
+                <td>${cross ? p.exchange_rate.toFixed(4) : '—'}</td>
+                <td>${cross ? formatCurrency(converted, p.loan_currency) : '—'}</td>
+                <td>${formatDate(p.paid_at)}</td>
+            </tr>
+        `;
+    }).join('');
 };
 
 /* Load the modal */
@@ -110,10 +203,19 @@ const handleLoanSubmit = async (event) => {
     }
 };
 
-/* Connect Add Loan button */
-
-document.querySelectorAll('[data-action="add-loan"]').forEach(btn => {
-    btn.addEventListener('click', openLoanModal);
+/* Row clicks */
+document.getElementById('view-root').addEventListener('click', (event) => {
+    const borrowerRow = event.target.closest('[data-borrower]');
+    if (borrowerRow) {
+        showDetail(borrowerRow.dataset.borrower);
+        return;
+    }
+    const loanRow = event.target.closest('[data-loan-id]');
+    if (loanRow) {
+        selectedLoanId = parseInt(loanRow.dataset.loanId);
+        loadDetail();
+        return;
+    }
 });
 
 document.addEventListener('keydown', (event) => {
@@ -121,5 +223,8 @@ document.addEventListener('keydown', (event) => {
     if (event.key === 'Escape' && modal && !modal.hidden) closeLoanModal();
 });
 
-loadList();
-initModal();
+(async () => {
+    await loadViews();
+    await initModal();
+    await showList();
+})();

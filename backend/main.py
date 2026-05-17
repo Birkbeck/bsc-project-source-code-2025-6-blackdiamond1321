@@ -40,6 +40,7 @@ PUBLIC_PAGES = os.path.join(FRONTEND, "templates", "public")
 PRIVATE_PAGES = os.path.join(FRONTEND, "templates", "private")
 IMAGES = os.path.join(PROJECT_ROOT, "images")
 MODALS = os.path.join(FRONTEND, "templates", "modals")
+VIEWS = os.path.join(FRONTEND, "templates", "views")
 
 # Mount to static folder
 app.mount("/static", StaticFiles(directory=os.path.join(FRONTEND, "static")), name="static")
@@ -81,6 +82,15 @@ def budgets_page():
 def loans_page():
     """Loans page"""
     return FileResponse(os.path.join(PRIVATE_PAGES, "loans.html"))
+
+@app.get("/views/{name}")
+def view(name: str):
+    """Views for loans page"""
+    safe_name = os.path.basename(name)
+    path = os.path.join(VIEWS, f"{safe_name}.html")
+    if not os.path.isfile(path):
+        return JSONResponse(status_code=404, content={"detail": "View not found"})
+    return FileResponse(path)
 
 @app.get("/health", summary="Health Check", description="Check if the API is running")
 def health():

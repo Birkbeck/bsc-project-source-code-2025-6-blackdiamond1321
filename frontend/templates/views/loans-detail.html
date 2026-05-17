@@ -1,0 +1,49 @@
+<div class="page-header">
+    <button class="btn btn--ghost" id="back_btn">Back</button>
+</div>
+<h1 class="dashboard-title" id="detail_name">—</h1>
+<p class="dashboard-subtitle">Loan details</p>
+
+<div class="table-card">
+    <div class="table-header">
+        <h3 class="table-title">Loans</h3>
+    </div>
+    <table class="loan-table">
+        <thead>
+            <tr>
+                <th></th>
+                <th>Principal</th>
+                <th>Rate</th>
+                <th>Currency</th>
+                <th>Due</th>
+                <th>Paid</th>
+                <th>Remaining</th>
+                <th>Date</th>
+                <th>Status</th>
+            </tr>
+        </thead>
+        <tbody id="detail_body"></tbody>
+    </table>
+</div>
+
+<div class="table-card">
+    <div class="table-header">
+        <h3 class="table-title">Payment history</h3>
+    </div>
+    <table class="loan-table">
+        <thead>
+            <tr>
+                <th>Amount</th>
+                <th>Currency</th>
+                <th>Rate</th>
+                <th>Converted</th>
+                <th>Date</th>
+            </tr>
+        </thead>
+        <tbody id="payments_body"></tbody>
+    </table>
+    <div class="empty-state" id="payments_empty">
+        <h3>No payments yet</h3>
+        <p>Select or create a loan to see its payment history</p>
+    </div>
+</div>

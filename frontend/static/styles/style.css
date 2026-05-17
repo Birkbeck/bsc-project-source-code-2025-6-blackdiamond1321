@@ -968,6 +968,13 @@ nav.scrolled {
     background: rgba(255,255,255,0.02);
 }
 
+.loan-row {
+    cursor: pointer;
+}
+.loan-row--selected {
+    background: var(--card);
+}
+
 /*Responsive*/
 
 @media (max-width: 900px) {

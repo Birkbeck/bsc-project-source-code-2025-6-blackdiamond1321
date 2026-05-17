@@ -1,0 +1,35 @@
+<div class="page-header">
+    <div>
+        <h1 class="dashboard-title">Loans</h1>
+        <p class="dashboard-subtitle">Track money lent, owed, and payments back</p>
+    </div>
+    <button class="btn btn--primary" data-action="add-loan">Add Loan</button>
+</div>
+
+<div class="table-card">
+    <div class="table-header">
+        <h3 class="table-title">Borrowers</h3>
+        <span class="table-count" id="borrower_count">0 borrowers</span>
+    </div>
+    <table class="loan-table" id="borrowers_table">
+        <thead>
+            <tr>
+                <th>Borrower</th>
+                <th>Loans</th>
+                <th>Lent</th>
+                <th>Due</th>
+                <th>Paid</th>
+                <th>Remaining</th>
+                <th>Status</th>
+            </tr>
+        </thead>
+        <tbody id="borrowers_body"></tbody>
+    </table>
+    <div class="empty-state" id="loans_empty" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="empty-state-icon">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 8.25h19.5M2.25 9h19.5m-16.5 5.25h6m-6 2.25h3m-3.75 3h15a2.25 2.25 0 0 0 2.25-2.25V6.75A2.25 2.25 0 0 0 19.5 4.5h-15a2.25 2.25 0 0 0-2.25 2.25v10.5A2.25 2.25 0 0 0 4.5 19.5Z" />
+        </svg>
+        <h3>No loans yet</h3>
+        <p>Record money you've lent or owed</p>
+    </div>
+</div>
