@@ -1,0 +1,45 @@
+<div class="modal-overlay" id="loan_modal" hidden>
+    <div class="modal">
+        <button class="modal-close" id="loan_close" aria-label="Close">&times;</button>
+        <h2 class="modal-title">Add Loan</h2>
+
+        <form id="loan_form" class="modal-form">
+            <label class="field">
+                <span class="field-label">Borrower</span>
+                <input type="text" name="borrower" required maxlength="255">
+            </label>
+
+            <div class="field-row">
+                <label class="field">
+                    <span class="field-label">Principal</span>
+                    <input type="number" name="principal" required step="0.01" min="0.01">
+                </label>
+                <label class="field">
+                    <span class="field-label">Currency</span>
+                    <div class="select-wrapper">
+                        <select name="currency" required>
+                            <option value="GBP" selected>GBP £</option>
+                            <option value="USD">USD $</option>
+                            <option value="EUR">EUR €</option>
+                        </select>
+                    </div>
+                </label>
+            </div>
+
+            <div class="field-row">
+                <label class="field">
+                    <span class="field-label">Interest rate (%)</span>
+                    <input type="number" name="interest_rate" step="0.01" min="0" value="0">
+                </label>
+                <label class="field">
+                    <span class="field-label">Date borrowed</span>
+                    <input type="date" name="borrowed_at" required>
+                </label>
+            </div>
+
+            <div class="modal-error" id="loan_error" hidden></div>
+
+            <button type="submit" class="btn btn--primary btn--full">Save</button>
+        </form>
+    </div>
+</div>

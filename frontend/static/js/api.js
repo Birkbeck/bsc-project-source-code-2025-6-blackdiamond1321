@@ -107,5 +107,12 @@ export const api = {
         body: data
     }),
     deleteBudget: (category) => apiJson(`/budgets/${encodeURIComponent(category)}`, { method: 'DELETE' }),
+    /* Loans */
+    getLoans: ()=> apiJson('/loans'),
+    createLoan: (data) => apiJson('/loans', {
+        method: 'POST',
+        body: data
+    }),
+    getPayments: (loanId) => apiJson(`/loans/${loanId}/payments`),
     token
 };

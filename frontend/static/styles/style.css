@@ -912,6 +912,62 @@ nav.scrolled {
     height: 16px;
 }
 
+/* Loans */
+
+/* Status badges  */
+
+.badge {
+    display: inline-block;
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    padding: 4px 10px;
+    border-radius: 20px;
+}
+.badge--paid    {
+    background: rgba(16, 185, 129, 0.1);
+    color: var(--accent);
+}
+.badge--partial {
+    background: rgba(245, 158, 11, 0.1);
+    color: #facc15;
+}
+.badge--unpaid  {
+    background: rgba(239, 68, 68, 0.1);
+    color: var(--red);
+}
+
+/* Loan table */
+
+.loan-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 14px;
+}
+.loan-table thead th {
+    text-transform: uppercase;
+    font-size: 11px;
+    letter-spacing: 1px;
+    color: var(--muted);
+    font-weight: 600;
+    padding: 14px 24px;
+    text-align: left;
+    border-bottom: 1px solid var(--border);
+}
+.loan-table tbody td {
+    padding: 16px 24px;
+    border-bottom: 1px solid var(--border);
+    vertical-align: middle;
+    font-variant-numeric: tabular-nums;
+}
+.loan-table tbody tr:last-child td {
+    border-bottom: none;
+}
+.loan-table tbody tr:hover {
+    background: rgba(255,255,255,0.02);
+}
+
 /*Responsive*/
 
 @media (max-width: 900px) {
