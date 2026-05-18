@@ -102,3 +102,8 @@ class PasswordChange(BaseModel):
     @classmethod
     def check_password(cls, value: str) -> str:
         return _validate_password_strength(value)
+
+class AccountDelete(BaseModel):
+    """Confirm account deletion by asking email and password"""
+    email: EmailStr
+    password: str

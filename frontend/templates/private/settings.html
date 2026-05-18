@@ -32,6 +32,7 @@
                     <p class="dashboard-subtitle">Manage your account</p>
                 </div>
             </div>
+            <!-- Change user's details -->
             <div class="settings-section">
                 <div class="settings-card">
                     <h3>Profile Details</h3>
@@ -89,7 +90,18 @@
                     </form>
                 </div>
             </div>
+            <!-- Delete account -->
+            <div class="settings-section">
+                <div class="settings-card settings-card--danger">
+                    <h3>Delete Account</h3>
+                    <p class="settings-desc">Permanently delete your account. This action cannot be undone.</p>
+                    <div class="settings-actions">
+                        <button class="btn btn--danger" id="delete_account_btn">Delete My Account</button>
+                    </div>
+                </div>
+            </div>
         </main>
     </div>
+    <div id="modal-root"></div>
 </body>
 </html>

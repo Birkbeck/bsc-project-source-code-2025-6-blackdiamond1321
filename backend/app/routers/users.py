@@ -12,7 +12,7 @@ from fastapi.security import OAuth2PasswordRequestForm
 
 from app.core.dependencies import get_user_service, get_current_user
 from app.schemas import (TokenResponse, UserCreate, UserLogin, UserResponse,
-                         EmailRequest, ForgotPassword, UserUpdate, PasswordChange)
+                         EmailRequest, ForgotPassword, UserUpdate, PasswordChange, AccountDelete)
 from app.services.user import UserService
 
 from app.models import User
@@ -87,3 +87,12 @@ def change_password(
 ) -> None:
     """Change the logged-in user's password"""
     service.change_password(user, data.current_password, data.new_password)
+
+@router.delete("/me", status_code=status.HTTP_204_NO_CONTENT)
+def delete_account(
+    data: AccountDelete,
+    service: UserService = Depends(get_user_service),
+    user: User = Depends(get_current_user),
+) -> None:
+    """Delete the logged-in user and all their data"""
+    service.delete_account(user, data.email, data.password)

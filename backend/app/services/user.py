@@ -98,3 +98,11 @@ class UserService:
             raise InvalidCredentialsError()
         user.password_hash = self._hasher.hash(new)
         self._users.update(user)
+
+    def delete_account(self, user: User, email: str, password: str) -> None:
+        """Check email and password, then delete the account"""
+        if email != user.email:
+            raise InvalidCredentialsError()
+        if not self._hasher.verify(password, user.password_hash):
+            raise InvalidCredentialsError()
+        self._users.delete(user)

@@ -86,9 +86,13 @@ export const api = {
         body: data,
     }),
    changePassword: (data) => apiJson('/users/me/password', {
-    method: 'POST',
-    body: data,
-}),
+        method: 'POST',
+        body: data,
+    }),
+    deleteAccount: (data) => apiJson('/users/me', {
+        method: 'DELETE',
+        body: data,
+    }),
 
     /* Password reset */
     forgotQuestion: (email) => apiJson('/users/forgot-question', {

@@ -1,0 +1,24 @@
+<div class="modal-overlay" id="delete_modal">
+    <div class="modal">
+        <button class="modal-close" type="button" data-close-modal>&times;</button>
+        <h2 class="modal-title">Delete Account</h2>
+        <p class="modal-subtitle">
+            This will permanently delete your account and all your data. This cannot be undone.
+        </p>
+        <form id="delete_form" class="modal-form">
+            <div class="field">
+                <label class="field-label">Type your email to confirm</label>
+                <input type="email" name="delete_email" placeholder="Enter your email" required>
+            </div>
+            <div class="field">
+                <label class="field-label">Enter your password</label>
+                <input type="password" name="delete_password" required>
+            </div>
+            <div class="modal-error" id="delete_error" hidden></div>
+            <div style="display:flex; gap:12px; justify-content:flex-end">
+                <button class="btn btn--ghost" type="button" data-close-modal>Cancel</button>
+                <button class="btn btn--danger" type="submit">Delete</button>
+            </div>
+        </form>
+    </div>
+</div>

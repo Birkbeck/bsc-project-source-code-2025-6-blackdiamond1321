@@ -81,6 +81,49 @@ const handlePasswordSubmit = async (e) => {
     }
 };
 
+/* Delete account */
+
+const root = document.getElementById('modal-root');
+
+/* Open modal */
+document.getElementById('delete_account_btn').addEventListener('click', async () => {
+    if (!root.querySelector('#delete_modal')) {
+        const html = await fetch('/modals/delete-account').then(r => r.text());
+        root.insertAdjacentHTML('beforeend', html);
+        wireDeleteModal();
+    }
+    document.getElementById('delete_modal').hidden = false;
+});
+
+const wireDeleteModal = () => {
+    const modal = document.getElementById('delete_modal');
+
+    modal.querySelectorAll('[data-close-modal]').forEach(el => {
+        el.addEventListener('click', () => { modal.hidden = true; });
+    });
+    modal.addEventListener('click', e => {
+        if (e.target === modal) modal.hidden = true;
+    });
+
+    document.getElementById('delete_form').addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const err = document.getElementById('delete_error');
+        err.hidden = true;
+
+        try {
+            await api.deleteAccount({
+                email: document.querySelector('[name="delete_email"]').value,
+                password: document.querySelector('[name="delete_password"]').value,
+            });
+            api.token.clear();
+            window.location.href = '/';
+        } catch (e) {
+            err.textContent = e.message;
+            err.hidden = false;
+        }
+    });
+};
+
 document.getElementById('password_form').addEventListener('submit', handlePasswordSubmit);
 
 document.getElementById('profile_form').addEventListener('submit', handleProfileSubmit);
