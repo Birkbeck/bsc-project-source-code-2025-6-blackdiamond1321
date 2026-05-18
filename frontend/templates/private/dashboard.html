@@ -13,8 +13,8 @@
     <link rel="stylesheet" href="/static/styles/style.css">
     <!-- Scripts -->
     <script type="module" src="/static/js/api.js"></script>
-    <script type="module" src="/static/js/dashboard.js"></script>
     <script type="module" src="/static/js/shell.js"></script>
+    <script type="module" src="/static/js/overview.js"></script>
 </head>
 <body>
     <!-- Background glow orbs -->
@@ -26,8 +26,13 @@
     <!-- Nav and sidebar injected by shell.js -->
     <div class="dashboard-layout">
         <main class="dashboard-main">
-            <h1 class="dashboard-title">Dashboard</h1>
-            <p class="dashboard-date" id="dashboard_date"></p>
+            <div class="page-header">
+                <div>
+                    <h1 class="dashboard-title">Overview</h1>
+                    <p class="dashboard-date" id="dashboard_date"></p>
+                </div>
+            </div>
+            <div class="stat-cards" id="stat_cards"></div>
         </main>
     </div>
 </body>
