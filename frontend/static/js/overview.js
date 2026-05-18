@@ -2,6 +2,7 @@
 
 import { api } from './api.js';
 import { formatCurrency } from './format.js';
+import { displayMonthlyBars } from './chart.js';
 
 /* Load transactions + loans, then display the stat cards */
 const load = async () => {
@@ -20,7 +21,35 @@ const load = async () => {
             year: 'numeric'
         });
 
+    displayMonthlyBars(
+        document.getElementById('monthly_bars'),
+        buildMonthlyData(transactions),
+    );
+
     displayStats(transactions, loans);
+};
+
+/* Incomes vs Expanses */
+const buildMonthlyData = (transactions) => {
+    const now = new Date();
+    const months = [];
+
+    /* sort from oldest to newest */
+    for (let i = 5; i >= 0; i--) {
+        const d = new Date(now.getFullYear(), now.getMonth() - i, 1);
+        const ym = `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}`;
+        const label = d.toLocaleDateString('en-GB', { month: 'short', year: '2-digit' });
+        months.push({ ym, label, income: 0, expense: 0 });
+    }
+
+    for (const t of transactions) {
+        const month = months.find(m => t.date.startsWith(m.ym));
+        if (!month) continue;
+        if (t.type === 'income') month.income  += t.amount;
+        else month.expense += t.amount;
+    }
+
+    return months;
 };
 
 /* Build the stat cards on the top row */

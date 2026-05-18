@@ -150,3 +150,79 @@ export const displayLine = (target, data) => {
         },
     });
 };
+
+/* Bar chart income vs expenses for 6 month */
+let monthlyBarChart;
+export const displayMonthlyBars = (target, data) => {
+    if (!data.length) {
+        target.innerHTML = '<p style="color:var(--text2)">No data</p>';
+        return;
+    }
+
+    if (!target.querySelector('canvas')) target.innerHTML = '<canvas></canvas>';
+    const canvas = target.querySelector('canvas');
+
+    if (monthlyBarChart) monthlyBarChart.destroy();
+
+    monthlyBarChart = new Chart(canvas, {
+        type: 'bar',
+        data: {
+            labels: data.map(d => d.label),
+            datasets: [
+                {
+                    label: 'Income',
+                    data: data.map(d => d.income),
+                    backgroundColor: '#10b981',
+                    order: 2, // bar under the line
+                },
+                {
+                    label: 'Expenses',
+                    data: data.map(d => d.expense),
+                    backgroundColor: '#ef4444',
+                    order: 2, // bar under the line
+                },
+                {
+                    label: 'Net Saved',
+                    type: 'line',
+                    data: data.map(d => d.income - d.expense),
+                    borderColor: '#facc15', // yellow
+                    backgroundColor: '#facc15',
+                    pointBackgroundColor: '#facc15',
+                    pointRadius: 4,
+                    tension: 0.3,
+                    order: 1,
+                    // draw line on top og graph
+                    fill: false,
+                },
+            ],
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                legend: {
+                    labels: {
+                        color: '#94a3b8',
+                        font: { family: 'DM Sans' }
+                    }
+                },
+            },
+            scales: {
+                x: {
+                    ticks: { color: '#64748b' },
+                     grid:  {
+                        color: 'rgba(255,255,255,0.04)'
+                    }
+                },
+                y: {
+                    ticks: {
+                        color: '#64748b',
+                        callback: v => '£' + v
+                    },
+                    grid:  { color: 'rgba(255,255,255,0.04)'
+                    }
+                },
+            },
+        },
+    });
+};
