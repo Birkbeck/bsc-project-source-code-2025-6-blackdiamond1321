@@ -11,7 +11,8 @@ from fastapi import APIRouter, Depends, status
 from fastapi.security import OAuth2PasswordRequestForm
 
 from app.core.dependencies import get_user_service, get_current_user
-from app.schemas import TokenResponse, UserCreate, UserLogin, UserResponse, EmailRequest, ForgotPassword, UserUpdate
+from app.schemas import (TokenResponse, UserCreate, UserLogin, UserResponse,
+                         EmailRequest, ForgotPassword, UserUpdate, PasswordChange)
 from app.services.user import UserService
 
 from app.models import User
@@ -77,3 +78,12 @@ def reset_password(
     """Reset password by answering the question"""
     service.reset_password(data.email, data.answer, data.new_password)
     return {"message": "Password reset successfully"}
+
+@router.post("/me/password", status_code=status.HTTP_204_NO_CONTENT)
+def change_password(
+    data: PasswordChange,
+    service: UserService = Depends(get_user_service),
+    user: User = Depends(get_current_user),
+) -> None:
+    """Change the logged-in user's password"""
+    service.change_password(user, data.current_password, data.new_password)

@@ -91,3 +91,14 @@ class UserUpdate(BaseModel):
     first_name: str
     last_name: str
     email: EmailStr
+
+class PasswordChange(BaseModel):
+    """Change password from the settings page"""
+
+    current_password: str
+    new_password: str = Field(min_length=8)
+
+    @field_validator("new_password")
+    @classmethod
+    def check_password(cls, value: str) -> str:
+        return _validate_password_strength(value)

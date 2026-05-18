@@ -91,3 +91,10 @@ class UserService:
         user.last_name = data.last_name
         user.email = data.email
         return self._users.update(user)
+
+    def change_password(self, user: User, current: str, new: str) -> None:
+        """Check the current password, then replace it with the new one"""
+        if not self._hasher.verify(current, user.password_hash):
+            raise InvalidCredentialsError()
+        user.password_hash = self._hasher.hash(new)
+        self._users.update(user)

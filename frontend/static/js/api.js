@@ -35,8 +35,13 @@ const parseResponse = async (response) => {
     const data = await response.json().catch(() => null);
 
     if (!response.ok) {
+        let detail = data?.detail;
+        /* FastAPI validation errors */
+        if (Array.isArray(detail)) {
+            detail = detail.map(e => e.msg || JSON.stringify(e)).join('; ');
+        }
         throw new ApiError(
-            data?.detail ?? `Request failed (${response.status})`,
+            detail ?? `Request failed (${response.status})`,
             response.status
         );
     }
@@ -80,6 +85,10 @@ export const api = {
         method: 'PUT',
         body: data,
     }),
+   changePassword: (data) => apiJson('/users/me/password', {
+    method: 'POST',
+    body: data,
+}),
 
     /* Password reset */
     forgotQuestion: (email) => apiJson('/users/forgot-question', {

@@ -58,6 +58,37 @@
                     </form>
                 </div>
             </div>
+            <!-- Password change -->
+            <div class="settings-section">
+                <div class="settings-card">
+                    <h3>Change Password</h3>
+                    <p class="settings-desc">Enter your current password and choose a new one.</p>
+                    <form id="password_form" class="settings-form">
+                        <div class="form-group">
+                            <label>Current Password</label>
+                            <input type="password" class="form-input" name="current_password" required>
+                        </div>
+                        <div class="form-group">
+                            <label>New Password</label>
+                            <ul class="password-rules">
+                                <li data-rule="len">At least 8 characters</li>
+                                <li data-rule="upper">At least one capital letter</li>
+                                <li data-rule="digit">At least one digit</li>
+                                <li data-rule="symbol">At least one symbol (eg ?!£%)</li>
+                            </ul>
+                            <input type="password" class="form-input" name="new_password" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Confirm New Password</label>
+                            <input type="password" class="form-input" name="confirm_password" required>
+                        </div>
+                        <div class="settings-actions">
+                            <button class="btn btn--primary" type="submit">Change Password</button>
+                            <span class="settings-msg" id="password_msg"></span>
+                        </div>
+                    </form>
+                </div>
+            </div>
         </main>
     </div>
 </body>
