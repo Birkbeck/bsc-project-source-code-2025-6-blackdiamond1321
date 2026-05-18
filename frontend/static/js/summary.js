@@ -112,9 +112,28 @@ const display = () => {
 displayLine(document.getElementById('daily_line'), dailyData);
 };
 
+/* Build the PDF */
+const downloadPdf = async () => {
+    const from = document.querySelector('[name="from"]').value;
+    const to   = document.querySelector('[name="to"]').value;
+
+    try {
+        const blob = await api.downloadSummaryPdf(from, to);
+        const url  = URL.createObjectURL(blob);
+        const a    = document.createElement('a');
+        a.href     = url;
+        a.download = `fintrack-summary-${from}-to-${to}.pdf`;
+        a.click();
+        URL.revokeObjectURL(url);
+    } catch {
+        alert('Could not generate PDF');
+    }
+};
+
 /* Connect date inputs */
 document.querySelector('[name="from"]').addEventListener('change', display);
 document.querySelector('[name="to"]').addEventListener('change', display);
 document.getElementById('this_month_btn').addEventListener('click', setThisMonth);
+document.getElementById('download_pdf_btn').addEventListener('click', downloadPdf);
 
 load();

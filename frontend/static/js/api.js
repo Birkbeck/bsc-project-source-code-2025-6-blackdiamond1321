@@ -120,5 +120,18 @@ export const api = {
         body: data
     }),
     deleteLoan: (id) => apiJson(`/loans/${id}`, { method: 'DELETE' }),
+    /* Download the summary PDF*/
+    /* Download the summary PDF as a Blob (caller turns it into a save) */
+    async downloadSummaryPdf(from, to) {
+        const params = new URLSearchParams();
+        if (from) params.set('date_from', from);
+        if (to)   params.set('date_to', to);
+
+        const r = await fetch(`${API_BASE}/summary/pdf?${params}`, {
+            headers: buildHeaders(),
+        });
+        if (!r.ok) throw new ApiError(`PDF download failed (${r.status})`, r.status);
+        return r.blob();
+    },
     token
 };
