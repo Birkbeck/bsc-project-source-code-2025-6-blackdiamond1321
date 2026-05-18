@@ -97,6 +97,11 @@ def summary_page():
     """Summary page"""
     return FileResponse(os.path.join(PRIVATE_PAGES, "summary.html"))
 
+@app.get("/dashboard/settings")
+def settings_page():
+    """Settings page"""
+    return FileResponse(os.path.join(PRIVATE_PAGES, "settings.html"))
+
 @app.get("/health", summary="Health Check", description="Check if the API is running")
 def health():
     return {"status": "ok"}
