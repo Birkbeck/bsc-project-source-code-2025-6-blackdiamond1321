@@ -2,7 +2,7 @@
 
 import { api } from './api.js';
 import { formatCurrency } from './format.js';
-import { displayMonthlyBars } from './chart.js';
+import { displayMonthlyBars, displayCumulative } from './chart.js';
 
 /* Load transactions + loans, then display the stat cards */
 const load = async () => {
@@ -24,6 +24,11 @@ const load = async () => {
     displayMonthlyBars(
         document.getElementById('monthly_bars'),
         buildMonthlyData(transactions),
+    );
+    
+    displayCumulative(
+        document.getElementById('cumulative_line'),
+        buildCumulativeData(buildMonthlyData(transactions)),
     );
 
     displayStats(transactions, loans);
@@ -50,6 +55,15 @@ const buildMonthlyData = (transactions) => {
     }
 
     return months;
+};
+
+/* Cumulative savings */
+const buildCumulativeData = (monthlyData) => {
+    let total = 0;
+    return monthlyData.map(m => {
+        total += m.income - m.expense;
+        return { label: m.label, value: total };
+    });
 };
 
 /* Build the stat cards on the top row */

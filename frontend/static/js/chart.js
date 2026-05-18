@@ -2,7 +2,7 @@
 
 import { RING_COLOURS } from './palette.js';
 import { formatCurrency } from './format.js';
-// import Chart.js. The library to draw the spending line
+// import Chart.js. The library to draw charts
 import Chart from 'https://cdn.jsdelivr.net/npm/chart.js@4.4.1/auto/+esm';
 
 /* Display a donut chart */
@@ -221,6 +221,57 @@ export const displayMonthlyBars = (target, data) => {
                     },
                     grid:  { color: 'rgba(255,255,255,0.04)'
                     }
+                },
+            },
+        },
+    });
+};
+
+/* Cumulative savings chart */
+let cumulativeChart;
+export const displayCumulative = (target, data) => {
+    if (!data.length) {
+        target.innerHTML = '<p style="color:var(--text2)">No data</p>';
+        return;
+    }
+
+    if (!target.querySelector('canvas')) target.innerHTML = '<canvas></canvas>';
+    const canvas = target.querySelector('canvas');
+
+    if (cumulativeChart) cumulativeChart.destroy();
+
+    cumulativeChart = new Chart(canvas, {
+        type: 'line',
+        data: {
+            labels: data.map(d => d.label),
+            datasets: [{
+                label: 'Cumulative Savings',
+                data: data.map(d => d.value),
+                borderColor: '#10b981',
+                backgroundColor: 'rgba(16, 185, 129, 0.15)',
+                pointBackgroundColor: '#10b981',
+                pointRadius: 4,
+                tension: 0.3,
+                fill: true,
+            }],
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                legend: { display: false }
+            },
+            scales: {
+                x: {
+                    ticks: { color: '#64748b' },
+                     grid:  { color: 'rgba(255,255,255,0.04)' }
+                },
+                y: {
+                    ticks: {
+                        color: '#64748b',
+                        callback: v => '£' + v
+                    },
+                     grid:  { color: 'rgba(255,255,255,0.04)' }
                 },
             },
         },
