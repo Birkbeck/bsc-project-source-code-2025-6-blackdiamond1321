@@ -1,8 +1,47 @@
 /* FinTrack overview */
 
 import { api } from './api.js';
-import { formatCurrency } from './format.js';
+import { formatCurrency, formatDate } from './format.js';
 import { displayMonthlyBars, displayCumulative } from './chart.js';
+import { RING_COLOURS } from './palette.js';
+
+/* Display recent transactions */
+const displayRecent = (transactions) => {
+    /* Map each category to a colour */
+    const categories = [...new Set(transactions.map(t => t.category))].sort();
+    const categoryColour = {};
+    categories.forEach((cat, i) => {
+        categoryColour[cat] = RING_COLOURS[i % RING_COLOURS.length];
+    });
+
+    /* List 5 most recent transactions, newest first */
+    const recent = [...transactions]
+        .sort((a, b) => b.date.localeCompare(a.date))
+        .slice(0, 5);
+
+    const list = document.getElementById('recent_list');
+    if (recent.length === 0) {
+        list.innerHTML = '<p style="color:var(--text2)">No transactions yet</p>';
+        return;
+    }
+
+    list.innerHTML = recent.map(t => {
+        const sign = t.type === 'income' ? '+' : '−';
+        const colour = categoryColour[t.category];
+        return `
+            <div class="recent-row">
+                <div class="recent-row-main">
+                    <span class="recent-row-desc">${t.description}</span>
+                    <span class="recent-row-meta">
+                        ${formatDate(t.date)} ·
+                        <span style="color:${colour}">${t.category}</span>
+                    </span>
+                </div>
+                <span class="recent-row-amount recent-row-amount--${t.type}">${sign}${formatCurrency(t.amount)}</span>
+            </div>
+        `;
+    }).join('');
+};
 
 /* Load transactions + loans, then display the stat cards */
 const load = async () => {
@@ -21,15 +60,19 @@ const load = async () => {
             year: 'numeric'
         });
 
+    const monthly = buildMonthlyData(transactions);
+
     displayMonthlyBars(
         document.getElementById('monthly_bars'),
-        buildMonthlyData(transactions),
+        monthly,
     );
-    
+
     displayCumulative(
         document.getElementById('cumulative_line'),
-        buildCumulativeData(buildMonthlyData(transactions)),
+        buildCumulativeData(monthly),
     );
+
+    displayRecent(transactions);
 
     displayStats(transactions, loans);
 };

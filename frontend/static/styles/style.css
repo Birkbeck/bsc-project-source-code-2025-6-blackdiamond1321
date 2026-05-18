@@ -1382,6 +1382,55 @@ nav.scrolled {
     width: 100%;
 }
 
+/* Recent activity list */
+
+.recent-list {
+    display: flex;
+    flex-direction: column;
+}
+
+.recent-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px 0;
+    border-bottom: 1px solid var(--border);
+}
+
+.recent-row:last-child {
+    border-bottom: none;
+}
+
+.recent-row-main {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+.recent-row-desc {
+    color: var(--text);
+    font-weight: 500;
+    font-size: 14px;
+}
+
+.recent-row-meta {
+    color: var(--text2);
+    font-size: 12px;
+}
+
+.recent-row-amount {
+    font-weight: 600;
+    font-variant-numeric: tabular-nums;
+}
+
+.recent-row-amount--income  {
+    color: var(--accent);
+}
+
+.recent-row-amount--expense {
+    color: var(--red);
+}
+
 /* Responsive */
 
 @media (max-width: 600px) {
