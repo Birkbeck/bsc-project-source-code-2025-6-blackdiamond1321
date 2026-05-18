@@ -3,7 +3,7 @@
 from app.interfaces import IAuthToken, IPasswordHasher
 from app.models import User
 from app.repositories import UserRepository
-from app.schemas import TokenResponse, UserCreate, UserResponse, UserLogin
+from app.schemas import TokenResponse, UserCreate, UserResponse, UserLogin, UserUpdate
 from app.utils.exceptions import (
     IncorrectAnswerError,
     UserNotFoundError,
@@ -78,3 +78,16 @@ class UserService:
 
         user.password_hash = self._hasher.hash(new_password)
         self._users.update(user)
+
+    def update_profile(self, user: User, data: UserUpdate) -> User:
+        """Update name and email. Reject if the email is taken by someone else."""
+        if data.email != user.email:
+            existing = self._users.find_by_email(data.email)
+            if existing and existing.id != user.id:
+                raise EmailExistsError(
+                    f"Account with email {data.email} already exists"
+                )
+        user.first_name = data.first_name
+        user.last_name = data.last_name
+        user.email = data.email
+        return self._users.update(user)

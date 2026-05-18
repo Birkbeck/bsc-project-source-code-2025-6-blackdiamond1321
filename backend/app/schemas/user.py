@@ -86,3 +86,8 @@ class ForgotPassword(BaseModel):
     @classmethod
     def check_password(cls, value: str) -> str:
         return _validate_password_strength(value)
+
+class UserUpdate(BaseModel):
+    first_name: str
+    last_name: str
+    email: EmailStr

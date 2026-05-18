@@ -76,6 +76,10 @@ export const api = {
         username: email, password
     }),
     me: () => apiJson('/users/me'),
+        updateProfile: (data) => apiJson('/users/me', {
+        method: 'PUT',
+        body: data,
+    }),
 
     /* Password reset */
     forgotQuestion: (email) => apiJson('/users/forgot-question', {

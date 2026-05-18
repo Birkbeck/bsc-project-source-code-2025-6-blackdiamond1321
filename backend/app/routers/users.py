@@ -11,7 +11,7 @@ from fastapi import APIRouter, Depends, status
 from fastapi.security import OAuth2PasswordRequestForm
 
 from app.core.dependencies import get_user_service, get_current_user
-from app.schemas import TokenResponse, UserCreate, UserLogin, UserResponse, EmailRequest, ForgotPassword
+from app.schemas import TokenResponse, UserCreate, UserLogin, UserResponse, EmailRequest, ForgotPassword, UserUpdate
 from app.services.user import UserService
 
 from app.models import User
@@ -48,6 +48,15 @@ def login(
 def me(current_user: User = Depends(get_current_user)) -> User:
     """Return the logged-in user's info"""
     return current_user
+
+@router.put("/me", response_model=UserResponse)
+def update_profile(
+    data: UserUpdate,
+    service: UserService = Depends(get_user_service),
+    user: User = Depends(get_current_user),
+) -> User:
+    """Update the user's profile"""
+    return service.update_profile(user, data)
 
 @router.post("/forgot-question")
 def forgot_question(

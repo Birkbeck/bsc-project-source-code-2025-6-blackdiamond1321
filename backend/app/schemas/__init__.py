@@ -1,6 +1,6 @@
 """Store schemas for easy access"""
 
-from app.schemas.user import TokenResponse, UserCreate, UserResponse, UserLogin, EmailRequest, ForgotPassword
+from app.schemas.user import TokenResponse, UserCreate, UserResponse, UserLogin, EmailRequest, ForgotPassword, UserUpdate
 from app.schemas.transaction import TransactionCreate, TransactionResponse
 from app.schemas.budget import BudgetCreate, BudgetResponse
 from app.schemas.loan import LoanCreate, LoanResponse
@@ -26,5 +26,6 @@ __all__ = [
     "MonthlySummary",
     "CategoryBreakdown",
     "PaymentSourceCreate",
-    "PaymentSourceResponse"
+    "PaymentSourceResponse",
+    "UserUpdate",
 ]
