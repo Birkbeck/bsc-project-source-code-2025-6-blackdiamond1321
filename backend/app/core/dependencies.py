@@ -7,8 +7,10 @@ from fastapi.security import OAuth2PasswordBearer
 from app.core.config import settings
 from app.core.security import Argon2PasswordHasher, JWTAuthToken
 from app.database import get_db
-from app.repositories import UserRepository, TransactionRepository, BudgetRepository, LoanRepository, PaymentRepository, PaymentSourceRepository
-from app.services import UserService, TransactionService, BudgetService, LoanService, PaymentService, SummaryService, PaymentSourceService
+from app.repositories import (UserRepository, TransactionRepository, BudgetRepository,
+                              LoanRepository, PaymentRepository, PaymentSourceRepository)
+from app.services import (UserService, TransactionService, BudgetService, LoanService,
+                          PaymentService, SummaryService, PaymentSourceService, PdfService)
 from app.models.user import User
 from app.interfaces import IAuthToken
 
@@ -69,3 +71,7 @@ def get_current_user(
         raise HTTPException(status_code=401, detail="User not found")
 
     return user
+
+def get_pdf_service() -> PdfService:
+    """Build a PdfService"""
+    return PdfService()
