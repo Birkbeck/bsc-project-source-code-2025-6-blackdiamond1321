@@ -10,7 +10,7 @@ from app.database import get_db
 from app.repositories import (UserRepository, TransactionRepository, BudgetRepository,
                               LoanRepository, PaymentRepository, PaymentSourceRepository)
 from app.services import (UserService, TransactionService, BudgetService, LoanService,
-                          PaymentService, SummaryService, PaymentSourceService, PdfService)
+                          PaymentService, SummaryService, PaymentSourceService, PdfService, CalculatorService)
 from app.models.user import User
 from app.interfaces import IAuthToken
 
@@ -75,3 +75,7 @@ def get_current_user(
 def get_pdf_service() -> PdfService:
     """Build a PdfService"""
     return PdfService()
+
+def get_calculator_service() -> CalculatorService:
+    """Build a CalculatorService"""
+    return CalculatorService()

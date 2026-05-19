@@ -10,6 +10,7 @@ from app.schemas.loan import LoanCreate, LoanResponse
 from app.schemas.payment import PaymentCreate, PaymentResponse
 from app.schemas.summary import MonthlySummary, CategoryBreakdown
 from app.schemas.payment_source import PaymentSourceCreate, PaymentSourceResponse
+from app.schemas.calculator import CalculatorRequest, CalculatorResponse, CalculatorMonth
 
 __all__ = [
     "UserCreate",
@@ -38,5 +39,8 @@ __all__ = [
     "TFAEnableRequest",
     "TFADisableRequest",
     "TFALoginRequest",
-    "TFAChallengeResponse"
+    "TFAChallengeResponse",
+    "CalculatorRequest",
+    "CalculatorResponse",
+    "CalculatorMonth",
 ]
