@@ -13,7 +13,8 @@ from fastapi.security import OAuth2PasswordRequestForm
 from app.core.dependencies import get_user_service, get_current_user
 from app.schemas import (TokenResponse, UserCreate, UserLogin, UserResponse,
                          EmailRequest, ForgotPassword, UserUpdate, PasswordChange, AccountDelete,
-                         TFASetupResponse, TFAEnableRequest, TFAEnableResponse, TFADisableRequest)
+                         TFASetupResponse, TFAEnableRequest, TFAEnableResponse, TFADisableRequest,
+                         TFAChallengeResponse, TFALoginRequest)
 from app.services.user import UserService
 
 from app.models import User
@@ -33,17 +34,24 @@ def register(
     """Create a new user account and return a session token"""
     return service.register(data)
 
-@router.post("/login", response_model=TokenResponse)
+@router.post("/login")
 def login(
     form_data: OAuth2PasswordRequestForm = Depends(),
     service: UserService = Depends(get_user_service),
-) -> TokenResponse:
-    """Log in with email and password and return a token"""
+):
+    """Login. Returns a session token, or a 2FA challenge if 2FA is enabled"""
     return service.login(UserLogin(
-            # In OAuth2 the field is username
-            email=form_data.username,
-            password=form_data.password,
-        ))
+        email=form_data.username,
+        password=form_data.password,
+    ))
+
+@router.post("/login/2fa", response_model=TokenResponse)
+def login_2fa(
+    data: TFALoginRequest,
+    service: UserService = Depends(get_user_service),
+) -> TokenResponse:
+    """Check 2FA code"""
+    return service.login_2fa(data.challenge_token, data.code)
 
 
 @router.get("/me", response_model=UserResponse)

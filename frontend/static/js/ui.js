@@ -2,6 +2,8 @@
 
 import { api } from './api.js';
 
+let pendingChallengeToken = null;
+
 /* Modal open, close, and switch */
 const modalRoot = document.getElementById('modal-root');
 
@@ -51,6 +53,7 @@ modalRoot.addEventListener('click', (event) => {
         openModal('login');
         return;
     }
+
 });
 
 /* Escape key closes any open modal */
@@ -65,10 +68,12 @@ modalRoot.addEventListener('submit', async (event) => {
     event.preventDefault();
     const form = event.target;
 
-    if (form.id === 'login_form')    await loginUser(form);
+    if (form.id === 'login_form') await loginUser(form);
+    if (form.id === 'login_2fa_form')    await loginVerify2fa(form);
     if (form.id === 'register_form') await registerUser(form);
-    if (form.id === 'forgot_step1_form')  await forgotStep1(form);
-    if (form.id === 'forgot_step2_form')  await forgotStep2(form);
+    if (form.id === 'forgot_step1_form') await forgotStep1(form);
+    if (form.id === 'forgot_step2_form') await forgotStep2(form);
+    if (form.id === 'login_2fa_form') await loginVerify2fa(form);
 });
 
 /* Show an error message */
@@ -87,11 +92,36 @@ const loginUser = async (form) => {
     const data = readForm(form);
     try {
         const result = await api.login(data.email, data.password);
+
+        /* If 2FA is on, the server returns a challenge instead of a token */
+        if (result.requires_2fa) {
+            pendingChallengeToken = result.challenge_token;
+            await openModal('login-2fa');
+            document.querySelector('#login_2fa_form [name="code"]').focus();
+            return;
+        }
+
+        /* No 2FA go to the dashboard */
         api.token.set(result.access_token);
         closeModal();
         window.location.href = '/dashboard';
     } catch (err) {
         showError(form, err.message);
+    }
+};
+
+const loginVerify2fa = async (form) => {
+    const data = readForm(form);
+    try {
+        const result = await api.login2fa(pendingChallengeToken, data.code);
+        pendingChallengeToken = null; // clear after login
+        api.token.set(result.access_token);
+        closeModal();
+        window.location.href = '/dashboard';
+    } catch (err) {
+        const err_el = document.getElementById('login_2fa_error');
+        err_el.textContent = err.message;
+        err_el.hidden = false;
     }
 };
 

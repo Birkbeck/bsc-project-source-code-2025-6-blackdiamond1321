@@ -30,8 +30,8 @@ class Argon2PasswordHasher(IPasswordHasher):
 class JWTAuthToken(IAuthToken):
     """JWT implementation of IAuthToken using HS256"""
 
-    def __init__(self, secret_key: str, expire_hours: int = 24, algorithm: str = "HS256"):
-        # for test purpose jwt session last 24 hours, later will change to 15 min. For best security
+    def __init__(self, secret_key: str, expire_hours: int = 1, algorithm: str = "HS256"):
+        # for test purpose jwt session last 24 hours, later will change to 1 hour. For best security
         self._key = secret_key
         self._hours = expire_hours
         self._alg = algorithm
@@ -47,6 +47,24 @@ class JWTAuthToken(IAuthToken):
     def decode_token(self, token: str) -> int | None:
         try:
             payload = jwt.decode(token, self._key, algorithms=[self._alg])
+            return int(payload["sub"])
+        except (jwt.PyJWTError, KeyError, ValueError):
+            return None
+
+    def create_challenge_token(self, user_id: int) -> str:
+        expire = datetime.now(timezone.utc) + timedelta(minutes=2)
+        return jwt.encode(
+            {"sub": str(user_id), "exp": expire, "purpose": "2fa_pending"},
+            self._key,
+            algorithm=self._alg,
+        )
+
+    def decode_challenge_token(self, token: str) -> int | None:
+        """Only allow tokens for 2FA, reject other tokens"""
+        try:
+            payload = jwt.decode(token, self._key, algorithms=[self._alg])
+            if payload.get("purpose") != "2fa_pending":
+                return None
             return int(payload["sub"])
         except (jwt.PyJWTError, KeyError, ValueError):
             return None

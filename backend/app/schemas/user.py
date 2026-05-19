@@ -124,3 +124,14 @@ class TFADisableRequest(BaseModel):
     """Disable 2FA"""
     password: str
     code: str = Field(min_length=6, max_length=6)
+
+class TFAChallengeResponse(BaseModel):
+    """Sent by login when 2FA is on"""
+    requires_2fa: bool = True
+    challenge_token: str
+
+
+class TFALoginRequest(BaseModel):
+    """2nd login step with challenge token and 6-digit code"""
+    challenge_token: str
+    code: str

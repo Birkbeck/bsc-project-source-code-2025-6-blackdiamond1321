@@ -1,0 +1,19 @@
+<div class="modal-overlay" id="login_2fa_modal">
+    <div class="modal">
+        <button class="modal-close" aria-label="Close">&times;</button>
+        <h2 class="modal-title">Two-Factor Authentication</h2>
+        <p class="modal-subtitle">Enter the 6-digit code from your auth app.</p>
+
+        <form id="login_2fa_form" class="modal-form">
+            <label class="field">
+                <span class="field-label">Code</span>
+                <input type="text" name="code" required maxlength="6" inputmode="numeric"
+                       style="text-align:center;letter-spacing:6px;font-size:18px">
+            </label>
+
+            <div class="modal-error" id="login_2fa_error" hidden></div>
+
+            <button type="submit" class="btn btn--primary btn--full">Continue</button>
+        </form>
+    </div>
+</div>

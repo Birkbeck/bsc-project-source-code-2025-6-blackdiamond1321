@@ -57,11 +57,28 @@ class UserService:
         )
 
     def login(self, data: UserLogin) -> TokenResponse:
-        """Check credentials and return a token"""
+        """Check credentials and return a token. If 2FA is enabled, return a challenge token"""
         user = self._users.find_by_email(data.email)
         if not user or not self._hasher.verify(data.password, user.password_hash):
             raise InvalidCredentialsError()
 
+        if user.totp_enabled:
+            from app.schemas import TFAChallengeResponse
+            return TFAChallengeResponse(challenge_token=self._tokens.create_challenge_token(user.id))
+
+        return TokenResponse(
+            access_token=self._tokens.create_token(user.id),
+            user=UserResponse.model_validate(user),
+        )
+
+    def login_2fa(self, challenge_token: str, code: str) -> TokenResponse:
+        """Check t 2FA code connected with the challenge token"""
+        user_id = self._tokens.decode_challenge_token(challenge_token)
+        if user_id is None:
+            raise InvalidCredentialsError()
+        user = self._users.get(user_id)
+        if not user or not self.verify_totp(user, code):
+            raise InvalidCredentialsError()
         return TokenResponse(
             access_token=self._tokens.create_token(user.id),
             user=UserResponse.model_validate(user),

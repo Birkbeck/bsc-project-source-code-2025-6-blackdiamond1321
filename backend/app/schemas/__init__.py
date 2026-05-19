@@ -2,7 +2,8 @@
 
 from app.schemas.user import (TokenResponse, UserCreate, UserResponse, UserLogin, EmailRequest,
                               ForgotPassword, UserUpdate, PasswordChange, AccountDelete,
-                              TFASetupResponse, TFAEnableResponse,TFAEnableRequest, TFADisableRequest)
+                              TFASetupResponse, TFAEnableResponse,TFAEnableRequest, TFADisableRequest,
+                              TFALoginRequest, TFAChallengeResponse)
 from app.schemas.transaction import TransactionCreate, TransactionResponse
 from app.schemas.budget import BudgetCreate, BudgetResponse
 from app.schemas.loan import LoanCreate, LoanResponse
@@ -35,5 +36,7 @@ __all__ = [
     "TFASetupResponse",
     "TFAEnableResponse",
     "TFAEnableRequest",
-    "TFADisableRequest"
+    "TFADisableRequest",
+    "TFALoginRequest",
+    "TFAChallengeResponse"
 ]

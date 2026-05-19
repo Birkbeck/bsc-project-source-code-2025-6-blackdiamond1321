@@ -32,6 +32,14 @@ const buildHeaders = (extra = {}) => {
 
 /* Response parser */
 const parseResponse = async (response) => {
+    /* When token expired redirect  user back to landing */
+    if (response.status === 401) {
+        token.clear();
+        if (window.location.pathname.startsWith('/dashboard')) {
+            window.location.href = '/';
+        }
+        throw new ApiError('Session expired — please log in again', 401);
+    }
     const data = await response.json().catch(() => null);
 
     if (!response.ok) {
@@ -79,6 +87,10 @@ export const api = {
     }),
     login: (email, password) => apiForm('/users/login', {
         username: email, password
+    }),
+    login2fa: (challenge_token, code) => apiJson('/users/login/2fa', {
+        method: 'POST',
+        body: { challenge_token, code },
     }),
     me: () => apiJson('/users/me'),
         updateProfile: (data) => apiJson('/users/me', {
