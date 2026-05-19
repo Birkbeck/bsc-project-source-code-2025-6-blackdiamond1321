@@ -90,6 +90,19 @@
                     </form>
                 </div>
             </div>
+            <!-- Payment Methods -->
+            <div class="settings-section">
+                <div class="settings-card">
+                    <h3>Payment Methods</h3>
+                    <p class="settings-desc">Your cards and accounts. You can add or remove payment methods here.</p>
+                    <div class="ps-list" id="ps_list"></div>
+                    <form id="ps_form" class="settings-actions" style="gap:8px; flex-wrap:wrap">
+                        <input type="text" class="form-input" name="ps_name" style="max-width:320px" required>
+                        <button class="btn btn--primary" type="submit">Add</button>
+                        <span class="settings-msg" id="ps_msg"></span>
+                    </form>
+                </div>
+            </div>
             <!-- Delete account -->
             <div class="settings-section">
                 <div class="settings-card settings-card--danger">

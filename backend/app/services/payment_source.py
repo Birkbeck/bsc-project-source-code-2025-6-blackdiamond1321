@@ -27,3 +27,11 @@ class PaymentSourceService:
         if not source:
             raise PaymentSourceNotFoundError()
         self._sources.delete(source)
+
+    def update(self, user: User, source_id: int, data: PaymentSourceCreate) -> PaymentSource:
+        """Rename the user's payment method"""
+        source = self._sources.get_for_user(source_id, user.id)
+        if not source:
+            raise PaymentSourceNotFoundError()
+        source.name = data.name
+        return self._sources.update(source)

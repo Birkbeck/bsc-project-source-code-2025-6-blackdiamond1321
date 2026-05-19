@@ -41,3 +41,13 @@ def delete_source(
 ) -> None:
     """Delete a method"""
     service.delete(user, source_id)
+
+@router.put("/{source_id}", response_model=PaymentSourceResponse)
+def update_source(
+    source_id: int,
+    data: PaymentSourceCreate,
+    service: PaymentSourceService = Depends(get_payment_source_service),
+    user: User = Depends(get_current_user),
+) -> PaymentSourceResponse:
+    """Rename a method"""
+    return service.update(user, source_id, data)

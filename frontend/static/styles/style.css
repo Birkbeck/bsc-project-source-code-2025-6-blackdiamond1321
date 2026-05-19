@@ -1519,6 +1519,30 @@ nav.scrolled {
     color: var(--red);
 }
 
+/* Payment methods in Settings */
+.ps-list {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 12px;
+}
+
+.ps-row {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    padding: 8px 0;
+    border-bottom: 1px solid var(--border);
+}
+
+.ps-row:last-child {
+    border-bottom: none;
+}
+
+.ps-row .form-input {
+    max-width: 320px;
+    flex: 1;
+}
+
 
 /* Responsive */
 

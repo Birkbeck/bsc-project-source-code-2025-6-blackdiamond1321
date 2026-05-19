@@ -85,7 +85,7 @@ export const api = {
         method: 'PUT',
         body: data,
     }),
-   changePassword: (data) => apiJson('/users/me/password', {
+    changePassword: (data) => apiJson('/users/me/password', {
         method: 'POST',
         body: data,
     }),
@@ -113,17 +113,32 @@ export const api = {
         method: 'PUT',
         body: data
     }),
-    deleteTransaction: (id) => apiJson(`/transactions/${id}`, { method: 'DELETE' }),
+    deleteTransaction: (id) => apiJson(`/transactions/${id}`, {
+        method: 'DELETE'
+    }),
 
     /* Payment sources */
     getPaymentSources: () => apiJson('/payment-sources'),
+    createPaymentSource: (data) => apiJson('/payment-sources', {
+        method: 'POST',
+        body: data,
+    }),
+    updatePaymentSource: (id, data) => apiJson(`/payment-sources/${id}`, {
+        method: 'PUT',
+        body: data,
+    }),
+    deletePaymentSource: (id) => apiJson(`/payment-sources/${id}`, {
+    method: 'DELETE'
+    }),
 
     /* Budgets */
     getBudgets: () => apiJson('/budgets'),
     createBudget: (data) => apiJson('/budgets', { method: 'POST',
         body: data
     }),
-    deleteBudget: (category) => apiJson(`/budgets/${encodeURIComponent(category)}`, { method: 'DELETE' }),
+    deleteBudget: (category) => apiJson(`/budgets/${encodeURIComponent(category)}`, {
+        method: 'DELETE'
+    }),
     /* Loans */
     getLoans: ()=> apiJson('/loans'),
     createLoan: (data) => apiJson('/loans', {
