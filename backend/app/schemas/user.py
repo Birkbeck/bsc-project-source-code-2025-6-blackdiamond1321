@@ -5,9 +5,7 @@ from pydantic import BaseModel, EmailStr, Field, field_validator
 import re
 
 def _validate_password_strength(value: str) -> str:
-    """Backend gatekeeper for password rules. The register modal shows the
-    same four checks as a live checklist — keep them in sync if you change
-    the rules here."""
+    """Password rules validator"""
     if not re.search(r"[A-Z]", value):
         raise ValueError("Password must contain at least one capital letter")
     if not re.search(r"\d", value):
@@ -48,6 +46,7 @@ class UserResponse(BaseModel):
     email: EmailStr
     first_name: str
     last_name: str
+    totp_enabled: bool = False
 
     model_config = {"from_attributes": True}
 

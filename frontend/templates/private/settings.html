@@ -103,6 +103,21 @@
                     </form>
                 </div>
             </div>
+            <!-- Two-Factor Authentication -->
+            <div class="settings-section">
+                <div class="settings-card">
+                    <h3>
+                        Two-Factor Authentication
+                        <span class="badge badge--unpaid" id="tfa_status" style="margin-left:10px;font-size:11px">DISABLED</span>
+                    </h3>
+                    <p class="settings-desc">Add a second layer of protection to your account</p>
+                    <div class="settings-actions">
+                        <button class="btn btn--primary" id="tfa_enable_btn">Enable Two-Factor Auth</button>
+                        <button class="btn btn--secondary" id="tfa_disable_btn" hidden>Disable Two-Factor Auth</button>
+                        <span class="settings-msg" id="tfa_msg"></span>
+                    </div>
+                </div>
+            </div>
             <!-- Delete account -->
             <div class="settings-section">
                 <div class="settings-card settings-card--danger">

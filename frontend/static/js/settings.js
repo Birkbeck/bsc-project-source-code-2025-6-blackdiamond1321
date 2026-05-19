@@ -8,6 +8,7 @@ const loadProfile = async () => {
     document.querySelector('[name="first_name"]').value = user.first_name;
     document.querySelector('[name="last_name"]').value = user.last_name;
     document.querySelector('[name="email"]').value = user.email;
+    updateTfaUI(user.totp_enabled);
 };
 
 /* Change profile details */
@@ -147,7 +148,121 @@ document.getElementById('ps_form').addEventListener('submit', async (e) => {
     }
 });
 
-loadPaymentMethods();
+/* 2FA */
+
+/* Change the status between enabled/disabled */
+const updateTfaUI = (enabled) => {
+    const status = document.getElementById('tfa_status');
+    const enableBtn = document.getElementById('tfa_enable_btn');
+    const disableBtn = document.getElementById('tfa_disable_btn');
+    if (enabled) {
+        status.textContent = 'ENABLED';
+        status.className = 'badge badge--paid';
+        enableBtn.hidden = true;
+        disableBtn.hidden = false;
+    } else {
+        status.textContent = 'DISABLED';
+        status.className = 'badge badge--unpaid';
+        enableBtn.hidden = false;
+        disableBtn.hidden = true;
+    }
+};
+
+/* Open the setup modal */
+document.getElementById('tfa_enable_btn').addEventListener('click', async () => {
+    try {
+        if (!root.querySelector('#tfa_setup_modal')) {
+            const html = await fetch('/modals/2fa-setup').then(r => r.text());
+            root.insertAdjacentHTML('beforeend', html);
+            wireTfaSetupModal();
+        }
+        const { secret, qr_data_url } = await api.setup2FA();
+        document.getElementById('tfa_qr').src        = qr_data_url;
+        document.getElementById('tfa_secret').value  = secret;
+        document.getElementById('tfa_setup_code').value = '';
+        document.getElementById('tfa_setup_error').hidden = true;
+        document.getElementById('tfa_setup_modal').hidden = false;
+    } catch (err) {
+        alert('Setup failed: ' + err.message);
+    }
+});
+
+const wireTfaSetupModal = () => {
+    const modal = document.getElementById('tfa_setup_modal');
+    modal.querySelectorAll('[data-close-modal]').forEach(el => {
+        el.addEventListener('click', () => { modal.hidden = true; });
+    });
+    modal.addEventListener('click', e => {
+        if (e.target === modal) modal.hidden = true;
+    });
+
+    document.getElementById('tfa_setup_verify_btn').addEventListener('click', async () => {
+        const code = document.getElementById('tfa_setup_code').value.trim().replace(/\s+/g, '');
+        const error = document.getElementById('tfa_setup_error');
+        error.hidden = true;
+        try {
+            const { recovery_codes } = await api.enable2FA(code);
+            modal.hidden = true;
+            await showBackupCodes(recovery_codes);
+            updateTfaUI(true);
+        } catch (err) {
+            error.textContent = err.message;
+            error.hidden = false;
+        }
+    });
+};
+
+/* Show the recovery codes */
+const showBackupCodes = async (codes) => {
+    if (!root.querySelector('#tfa_backup_modal')) {
+        const html = await fetch('/modals/2fa-codes').then(r => r.text());
+        root.insertAdjacentHTML('beforeend', html);
+        document.getElementById('tfa_backup_done_btn').addEventListener('click', () => {
+            document.getElementById('tfa_backup_modal').hidden = true;
+        });
+    }
+    document.getElementById('tfa_backup_codes').textContent = codes.join('\n');
+    document.getElementById('tfa_backup_modal').hidden = false;
+};
+
+/* Open the disable modal */
+document.getElementById('tfa_disable_btn').addEventListener('click', async () => {
+    if (!root.querySelector('#tfa_disable_modal')) {
+        const html = await fetch('/modals/2fa-disable').then(r => r.text());
+        root.insertAdjacentHTML('beforeend', html);
+        wireTfaDisableModal();
+    }
+    document.getElementById('tfa_disable_form').reset();
+    document.getElementById('tfa_disable_error').hidden = true;
+    document.getElementById('tfa_disable_modal').hidden = false;
+});
+
+const wireTfaDisableModal = () => {
+    const modal = document.getElementById('tfa_disable_modal');
+    modal.querySelectorAll('[data-close-modal]').forEach(el => {
+        el.addEventListener('click', () => { modal.hidden = true; });
+    });
+    modal.addEventListener('click', e => {
+        if (e.target === modal) modal.hidden = true;
+    });
+
+    document.getElementById('tfa_disable_form').addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const error = document.getElementById('tfa_disable_error');
+        error.hidden = true;
+        try {
+            await api.disable2FA({
+                password: document.querySelector('[name="tfa_disable_password"]').value,
+                code:     document.querySelector('[name="tfa_disable_code"]').value,
+            });
+            modal.hidden = true;
+            updateTfaUI(false);
+        } catch (err) {
+            error.textContent = err.message;
+            error.hidden = false;
+        }
+    });
+};
 
 /* Delete account */
 
@@ -196,4 +311,5 @@ document.getElementById('password_form').addEventListener('submit', handlePasswo
 
 document.getElementById('profile_form').addEventListener('submit', handleProfileSubmit);
 
+loadPaymentMethods();
 loadProfile();

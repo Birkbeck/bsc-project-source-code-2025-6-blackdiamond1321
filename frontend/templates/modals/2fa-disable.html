@@ -1,0 +1,22 @@
+<div class="modal-overlay" id="tfa_disable_modal">
+    <div class="modal">
+        <button class="modal-close" type="button" data-close-modal>&times;</button>
+        <h2 class="modal-title">Disable two-factor authentication</h2>
+        <p class="modal-subtitle">Please enter your password and a current 2FA code.</p>
+        <form id="tfa_disable_form" class="modal-form">
+            <div class="field">
+                <label class="field-label">Password</label>
+                <input type="password" class="form-input" name="tfa_disable_password" required>
+            </div>
+            <div class="field">
+                <label class="field-label">Current 6-digit code</label>
+                <input type="text" class="form-input" name="tfa_disable_code" maxlength="6" inputmode="numeric" required style="text-align:center;letter-spacing:6px;font-size:18px">
+                <div class="modal-error" id="tfa_disable_error" hidden></div>
+            </div>
+            <div style="display:flex;gap:12px;justify-content:flex-end">
+                <button class="btn btn--ghost" type="button" data-close-modal>Cancel</button>
+                <button class="btn btn--danger" type="submit">Disable</button>
+            </div>
+        </form>
+    </div>
+</div>

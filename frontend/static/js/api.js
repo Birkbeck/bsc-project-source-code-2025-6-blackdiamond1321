@@ -103,6 +103,18 @@ export const api = {
         method: 'POST',
         body: { email, answer, new_password }
     }),
+
+    /* 2FA */
+    setup2FA: () => apiJson('/users/me/2fa/setup', { method: 'POST' }),
+    enable2FA: (code) => apiJson('/users/me/2fa/enable', {
+        method: 'POST',
+        body: { code }
+    }),
+    disable2FA: (data) => apiJson('/users/me/2fa/disable', {
+        method: 'POST',
+        body: data
+    }),
+
     /* Transactions */
     getTransactions: () => apiJson('/transactions'),
     createTransaction: (data) => apiJson('/transactions', {
@@ -139,12 +151,14 @@ export const api = {
     deleteBudget: (category) => apiJson(`/budgets/${encodeURIComponent(category)}`, {
         method: 'DELETE'
     }),
+
     /* Loans */
     getLoans: ()=> apiJson('/loans'),
     createLoan: (data) => apiJson('/loans', {
         method: 'POST',
         body: data
     }),
+
     /* Payments in loan */
     getPayments: (loanId) => apiJson(`/loans/${loanId}/payments`),
     createPayment: (loanId, data)  => apiJson(`/loans/${loanId}/payments`, {
@@ -152,8 +166,8 @@ export const api = {
         body: data
     }),
     deleteLoan: (id) => apiJson(`/loans/${id}`, { method: 'DELETE' }),
+
     /* Download the summary PDF*/
-    /* Download the summary PDF as a Blob (caller turns it into a save) */
     async downloadSummaryPdf(from, to) {
         const params = new URLSearchParams();
         if (from) params.set('date_from', from);
