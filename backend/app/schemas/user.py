@@ -107,3 +107,21 @@ class AccountDelete(BaseModel):
     """Confirm account deletion by asking email and password"""
     email: EmailStr
     password: str
+
+class TFASetupResponse(BaseModel):
+    """Returned when the user starts 2FA setup"""
+    secret: str
+    qr_data_url: str
+
+class TFAEnableRequest(BaseModel):
+    """Confirm the 6-digit code from the auth app"""
+    code: str = Field(min_length=6, max_length=6)
+
+class TFAEnableResponse(BaseModel):
+    """After enabling 2FA, return the one-time recovery codes"""
+    recovery_codes: list[str]
+
+class TFADisableRequest(BaseModel):
+    """Disable 2FA"""
+    password: str
+    code: str = Field(min_length=6, max_length=6)

@@ -2,7 +2,7 @@
 
 from datetime import datetime, timezone
 
-from sqlalchemy import DateTime, Integer, String
+from sqlalchemy import DateTime, Integer, String, Text, Boolean
 
 # use Mapped and mapped_column as it shows what type of data each field stores
 from sqlalchemy.orm import Mapped, mapped_column, relationship
@@ -30,3 +30,8 @@ class User(Base):
     budgets = relationship("Budget", cascade="all, delete-orphan")
     loans = relationship("Loan", cascade="all, delete-orphan")
     payment_sources = relationship("PaymentSource", cascade="all, delete-orphan")
+
+    # 2FA
+    totp_secret: Mapped[str | None] = mapped_column(String(64), nullable=True)
+    totp_enabled: Mapped[bool] = mapped_column(Boolean, default=False, nullable=False)
+    recovery_codes: Mapped[str | None] = mapped_column(Text, nullable=True) # JSON list

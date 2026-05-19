@@ -12,7 +12,8 @@ from fastapi.security import OAuth2PasswordRequestForm
 
 from app.core.dependencies import get_user_service, get_current_user
 from app.schemas import (TokenResponse, UserCreate, UserLogin, UserResponse,
-                         EmailRequest, ForgotPassword, UserUpdate, PasswordChange, AccountDelete)
+                         EmailRequest, ForgotPassword, UserUpdate, PasswordChange, AccountDelete,
+                         TFASetupResponse, TFAEnableRequest, TFAEnableResponse, TFADisableRequest)
 from app.services.user import UserService
 
 from app.models import User
@@ -96,3 +97,32 @@ def delete_account(
 ) -> None:
     """Delete the logged-in user and all their data"""
     service.delete_account(user, data.email, data.password)
+
+@router.post("/me/2fa/setup", response_model=TFASetupResponse)
+def setup_2fa(
+    service: UserService = Depends(get_user_service),
+    user: User = Depends(get_current_user),
+) -> TFASetupResponse:
+    """Setup 2FA, secret and QR code"""
+    return service.start_2fa_setup(user)
+
+
+@router.post("/me/2fa/enable", response_model=TFAEnableResponse)
+def enable_2fa(
+    data: TFAEnableRequest,
+    service: UserService = Depends(get_user_service),
+    user: User = Depends(get_current_user),
+) -> TFAEnableResponse:
+    """Confirm the code from the auth app and enable 2FA"""
+    codes = service.enable_2fa(user, data.code)
+    return TFAEnableResponse(recovery_codes=codes)
+
+
+@router.post("/me/2fa/disable", status_code=status.HTTP_204_NO_CONTENT)
+def disable_2fa(
+    data: TFADisableRequest,
+    service: UserService = Depends(get_user_service),
+    user: User = Depends(get_current_user),
+) -> None:
+    """Turn 2FA off"""
+    service.disable_2fa(user, data.password, data.code)
