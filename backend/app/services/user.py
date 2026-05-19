@@ -118,23 +118,22 @@ class UserService:
     def start_2fa_setup(self, user: User) -> "TFASetupResponse":
         """Generate TOTP secret and a QR code for the auth app"""
         from app.schemas import TFASetupResponse
-        secret = pyotp.random_base32()
-        user.totp_secret = secret
-        self._users.update(user)
 
-        uri = pyotp.totp.TOTP(secret).provisioning_uri(
-            name=user.email, issuer_name="FinTrack",
-        )
+        if not user.totp_secret:
+            user.totp_secret = pyotp.random_base32()
+            self._users.update(user)
+
+        uri = pyotp.totp.TOTP(user.totp_secret).provisioning_uri(name=user.email, issuer_name="FinTrack")
         img = qrcode.make(uri)
         buf = io.BytesIO()
         img.save(buf, format="PNG")
         qr_data_url = "data:image/png;base64," + base64.b64encode(buf.getvalue()).decode()
 
-        return TFASetupResponse(secret=secret, qr_data_url=qr_data_url)
+        return TFASetupResponse(secret=user.totp_secret, qr_data_url=qr_data_url)
 
     def enable_2fa(self, user: User, code: str) -> list[str]:
         """Check the code from setup, return recovery codes"""
-        if not user.totp_secret or not pyotp.TOTP(user.totp_secret).verify(code):
+        if not user.totp_secret or not pyotp.TOTP(user.totp_secret).verify(code, valid_window=1):
             raise InvalidCredentialsError()
 
         codes = [secrets.token_hex(4) for _ in range(8)]
@@ -146,9 +145,9 @@ class UserService:
     def disable_2fa(self, user: User, password: str, code: str) -> None:
         """Check password and current code from auth app, then turn 2FA off"""
         if not self._hasher.verify(password, user.password_hash):
-            raise InvalidCredentialsError()
-        if not user.totp_secret or not pyotp.TOTP(user.totp_secret).verify(code):
-            raise InvalidCredentialsError()
+            raise InvalidCredentialsError("Wrong password")
+        if not user.totp_secret or not pyotp.TOTP(user.totp_secret).verify(code, valid_window=1):
+            raise InvalidCredentialsError("Wrong 2FA code")
         user.totp_enabled = False
         user.totp_secret = None
         user.recovery_codes = None
@@ -158,7 +157,7 @@ class UserService:
         """Check a 6-digit code or a recovery code"""
         if not user.totp_secret:
             return False
-        if pyotp.TOTP(user.totp_secret).verify(code):
+        if pyotp.TOTP(user.totp_secret).verify(code, valid_window=1):
             return True
         codes = json.loads(user.recovery_codes or "[]")
         if code in codes:
