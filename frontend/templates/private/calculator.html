@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculator</title>
+    <link rel="icon" type="image/png" href="/images/logo/icon.png">
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <!-- CSS -->
+    <link rel="stylesheet" href="/static/styles/style.css">
+    <!-- Scripts -->
+    <script type="module" src="/static/js/api.js"></script>
+    <script type="module" src="/static/js/shell.js"></script>
+    <script type="module" src="/static/js/calculator.js"></script>
+</head>
+<body>
+    <!-- Background glow orbs -->
+    <div class="glow-orb glow-orb--tl"></div>
+    <div class="glow-orb glow-orb--tr"></div>
+    <div class="glow-orb glow-orb--bl"></div>
+    <div class="glow-orb glow-orb--br"></div>
+
+    <!-- Nav and sidebar injected by shell.js -->
+    <div class="dashboard-layout">
+        <main class="dashboard-main">
+            <div class="page-header">
+                <div>
+                    <h1 class="dashboard-title">Calculator</h1>
+                    <p class="dashboard-subtitle">Project compound-interest growth</p>
+                </div>
+            </div>
+
+            <!-- Inputs -->
+            <div class="settings-section">
+                <div class="settings-card">
+                    <form id="calc_form" class="settings-form">
+                        <div class="settings-row">
+                            <div class="form-group">
+                                <label>Initial Principal (£)</label>
+                                <input type="number" class="form-input" name="principal" min="0" step="any" value="1000" required>
+                            </div>
+                            <div class="form-group">
+                                <label>Monthly Contribution (£)</label>
+                                <input type="number" class="form-input" name="monthly_contribution" min="0" step="any" value="100" required>
+                            </div>
+                        </div>
+                        <div class="settings-row">
+                            <div class="form-group">
+                                <label>Annual Return Rate (%)</label>
+                                <input type="number" class="form-input" name="annual_rate_pct" min="0" max="100" step="any" value="7" required>
+                            </div>
+                            <div class="form-group">
+                                <label>Years</label>
+                                <input type="number" class="form-input" name="years" min="1" max="30" step="1" value="10" required>
+                            </div>
+                        </div>
+                        <div class="settings-actions">
+                            <button class="btn btn--primary" type="submit">Calculate</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <!-- Results -->
+            <div class="stat-cards" id="calc_stats" ></div>
+        </main>
+    </div>
+</body>
+</html>

@@ -191,5 +191,10 @@ export const api = {
         if (!r.ok) throw new ApiError(`PDF download failed (${r.status})`, r.status);
         return r.blob();
     },
+    /* Calculator */
+    calculate: (data) => apiJson('/calculator', {
+        method: 'POST',
+        body: data
+    }),
     token
 };
