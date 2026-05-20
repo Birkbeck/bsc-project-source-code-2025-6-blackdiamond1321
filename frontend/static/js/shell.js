@@ -5,6 +5,11 @@ import { api } from './api.js';
 /* Nav */
 const NAV_HTML = `
 <nav>
+    <button class="hamburger" id="hamburger_btn" aria-label="Toggle menu">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" width="20" height="20">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
+        </svg>
+    </button>
     <a href="/dashboard" class="logo">
         <img src="/images/logo/icon.png" alt="" class="logo-icon-img">
         <span class="logo-text"><span class="highlight">FinTrack</span></span>
@@ -92,15 +97,39 @@ const injectShell = () => {
     const layout = document.querySelector('.dashboard-layout');
     if (layout) {
         layout.insertAdjacentHTML('afterbegin', SIDEBAR_HTML);
+        /* Backdrop locates behind the sidebar on mobile */
+        layout.insertAdjacentHTML('beforeend', '<div class="sidebar-backdrop" id="sidebar_backdrop"></div>');
     }
 
-    /* Highlight the current sidebar link */
+    /* Highlight current page */
     const current = window.location.pathname;
     document.querySelectorAll('.sidebar-link[data-path]').forEach(link => {
         if (link.getAttribute('data-path') === current) {
             link.classList.add('sidebar-link--active');
         }
     });
+
+    wireMobileMenu();
+};
+
+const wireMobileMenu = () => {
+    const sidebar  = document.querySelector('.sidebar');
+    const backdrop = document.getElementById('sidebar_backdrop');
+    const burger   = document.getElementById('hamburger_btn');
+    if (!sidebar || !backdrop || !burger) return;
+
+    const open  = () => { sidebar.classList.add('open');    backdrop.classList.add('open'); };
+    const close = () => { sidebar.classList.remove('open'); backdrop.classList.remove('open'); };
+
+    burger.addEventListener('click', () =>
+        sidebar.classList.contains('open') ? close() : open()
+    );
+    backdrop.addEventListener('click', close);
+
+    /* Close after the user taps any nav link — they're navigating away */
+    sidebar.querySelectorAll('.sidebar-link').forEach(link =>
+        link.addEventListener('click', close)
+    );
 };
 
 /* If not logged in (no valid token), send back to the landing */
