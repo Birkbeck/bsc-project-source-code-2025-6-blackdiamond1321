@@ -9,7 +9,6 @@ CACHE_TTL = 30
 
 STOCKS = [
     ("AAPL", "Apple"),
-    ("AMZN", "Amazon"),
     ("GOOGL", "Alphabet"),
     ("NFLX", "Netflix"),
     ("KO", "Coca-Cola"),
@@ -20,7 +19,6 @@ CRYPTO = [
     ("BTC-USD", "Bitcoin"),
     ("ETH-USD", "Ethereum"),
     ("SOL-USD", "Solana"),
-    ("XRP-USD", "XRP"),
     ("BNB-USD", "BNB"),
     ("DOGE-USD", "Dogecoin"),
 ]

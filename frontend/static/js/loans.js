@@ -76,7 +76,6 @@ const loadList = async () => {
         return `
             <tr data-borrower="${r.name}" class="loan-row">
                 <td><strong>${r.name}</strong></td>
-                <td>${r.count}</td>
                 <td>${formatCurrency(r.principal, r.currency)}</td>
                 <td>${formatCurrency(r.due, r.currency)}</td>
                 <td style="color:var(--accent)">${formatCurrency(r.paid, r.currency)}</td>

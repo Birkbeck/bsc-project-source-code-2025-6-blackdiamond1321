@@ -111,6 +111,11 @@ def calculator_page():
     """Calculator page"""
     return FileResponse(os.path.join(PRIVATE_PAGES, "calculator.html"))
 
+@app.get("/dashboard/market")
+def market_page():
+    """Market page"""
+    return FileResponse(os.path.join(PRIVATE_PAGES, "market.html"))
+
 @app.get("/health", summary="Health Check", description="Check if the API is running")
 def health():
     return {"status": "ok"}

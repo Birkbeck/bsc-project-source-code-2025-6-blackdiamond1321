@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Market</title>
+    <link rel="icon" type="image/png" href="/images/logo/icon.png">
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <!-- CSS file -->
+    <link rel="stylesheet" href="/static/styles/style.css">
+    <!-- Scripts -->
+    <script type="module" src="/static/js/api.js"></script>
+    <script type="module" src="/static/js/shell.js"></script>
+    <script type="module" src="/static/js/market.js"></script>
+</head>
+<body>
+    <!-- Background glow orbs -->
+    <div class="glow-orb glow-orb--tl"></div>
+    <div class="glow-orb glow-orb--tr"></div>
+    <div class="glow-orb glow-orb--bl"></div>
+    <div class="glow-orb glow-orb--br"></div>
+    <!-- Nav and sidebar injected by shell.js -->
+    <div class="dashboard-layout">
+        <main class="dashboard-main">
+            <div class="page-header">
+                <div>
+                    <h1 class="dashboard-title">Market</h1>
+                    <p class="dashboard-subtitle" id="market_updated">Loading…</p>
+                </div>
+            </div>
+
+            <h2 class="market-section-title">Stocks</h2>
+            <div class="market-grid" id="stocks_grid"></div>
+
+            <h2 class="market-section-title">Crypto</h2>
+            <div class="market-grid" id="crypto_grid"></div>
+        </main>
+    </div>
+</body>
+</html>
