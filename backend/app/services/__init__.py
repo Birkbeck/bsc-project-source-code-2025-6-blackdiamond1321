@@ -9,6 +9,7 @@ from app.services.summary import SummaryService
 from app.services.payment_source import PaymentSourceService
 from app.services.pdf import PdfService
 from app.services.calculator import CalculatorService
+from app.services.market import MarketService
 
-__all__ = ["UserService", "TransactionService", "BudgetService", "LoanService",
-           "PaymentService", "SummaryService", "PaymentSourceService", "PdfService", "CalculatorService"]
+__all__ = ["UserService", "TransactionService", "BudgetService", "LoanService","PaymentService",
+           "SummaryService", "PaymentSourceService", "PdfService", "CalculatorService", "MarketService"]

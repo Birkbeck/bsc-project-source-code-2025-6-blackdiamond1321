@@ -11,6 +11,7 @@ from app.schemas.payment import PaymentCreate, PaymentResponse
 from app.schemas.summary import MonthlySummary, CategoryBreakdown
 from app.schemas.payment_source import PaymentSourceCreate, PaymentSourceResponse
 from app.schemas.calculator import CalculatorRequest, CalculatorResponse, CalculatorMonth
+from app.schemas.market import MarketResponse
 
 __all__ = [
     "UserCreate",
@@ -43,4 +44,5 @@ __all__ = [
     "CalculatorRequest",
     "CalculatorResponse",
     "CalculatorMonth",
+    "MarketResponse"
 ]

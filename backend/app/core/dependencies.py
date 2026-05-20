@@ -10,13 +10,15 @@ from app.database import get_db
 from app.repositories import (UserRepository, TransactionRepository, BudgetRepository,
                               LoanRepository, PaymentRepository, PaymentSourceRepository)
 from app.services import (UserService, TransactionService, BudgetService, LoanService,
-                          PaymentService, SummaryService, PaymentSourceService, PdfService, CalculatorService)
+                          PaymentService, SummaryService, PaymentSourceService, PdfService, CalculatorService,
+                          MarketService)
 from app.models.user import User
 from app.interfaces import IAuthToken
 
 # show the Swagger docs where to get a token
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="/api/users/login")
 
+_market_service = MarketService()
 
 def get_auth_token() -> IAuthToken:
     return JWTAuthToken(secret_key=settings.SECRET_KEY)
@@ -79,3 +81,7 @@ def get_pdf_service() -> PdfService:
 def get_calculator_service() -> CalculatorService:
     """Build a CalculatorService"""
     return CalculatorService()
+
+def get_market_service() -> MarketService:
+    """Build MarketService"""
+    return _market_service

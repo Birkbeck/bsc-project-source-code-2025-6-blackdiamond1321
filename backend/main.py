@@ -13,6 +13,7 @@ from app.routers import summary
 from app.routers import payment_sources
 from app.utils.exceptions import DomainError
 from app.routers import calculator
+from app.routers import market
 
 # create FastAPI app instance
 app = FastAPI(title="FinTrack API", version="0.1.0")
@@ -32,6 +33,7 @@ app.include_router(loans.router)
 app.include_router(summary.router)
 app.include_router(payment_sources.router)
 app.include_router(calculator.router)
+app.include_router(market.router)
 
 # Linking frontend files
 
