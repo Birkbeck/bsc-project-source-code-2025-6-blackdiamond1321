@@ -53,7 +53,6 @@ const display = (transactions) => {
     empty.hidden = true;
 
     body.innerHTML = transactions.map(t => {
-        const sign = t.type === 'income' ? '+' : '-';
         const colour = getCategoryColour(t.category);
         return `
             <tr class="transaction-row transaction-row--${t.type}">
@@ -61,7 +60,7 @@ const display = (transactions) => {
                 <td class="transaction-description">${t.description}</td>
                 <td class="transaction-category"><span style="color:${colour}">${t.category}</span></td>
                 <td class="transaction-method">${t.method}</td>
-                <td class="transaction-amount">${sign}${formatCurrency(t.amount)}</td>
+                <td class="transaction-amount">${formatCurrency(t.amount)}</td>
                 <td class="transaction-actions">
                     <button class="transaction-action-btn" data-action="edit" data-id="${t.id}" aria-label="Edit">${PENCIL_ICON}</button>
                     <button class="transaction-action-btn" data-action="delete" data-id="${t.id}" aria-label="Delete">${TRASH_ICON}</button>
